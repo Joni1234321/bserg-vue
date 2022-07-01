@@ -18,10 +18,29 @@ const router = createRouter(
                 path: "/products",
                 name: "products",
                 component: () => import("@/view/AboutView.vue")
-            }, {
+            },
+            {
                 path: "/projects",
                 name: "projects",
-                component: () => import("@/view/ProjectsView.vue")
+                redirect: {name: "projects.show"},
+                component: () => import("@/view/projects/ProjectsView.vue"),
+                children: [
+                    {
+                        path: "",
+                        name: "projects.show",
+                        component: () => import("@/view/projects/ProjectsShowView.vue"),
+                    },
+                    {
+                        path: "add",
+                        name: "projects.add",
+                        component: () => import("@/view/projects/ProjectsAddView.vue")
+                    },
+                    {
+                        path: "edit",
+                        name: "projects.edit",
+                        component: () => import("@/view/projects/ProjectsEditView.vue")
+                    },
+                ]
             },
             {
                 path: "/highlights",
@@ -29,8 +48,15 @@ const router = createRouter(
                 component: () => import("@/view/AboutView.vue")
             },
             {
-                path: "/card/:id",
-                component: () => import("@/view/CardView.vue")
+                path: "/projects/i/:url",
+                name: "project.show",
+                component: () => import("@/view/ProjectView.vue"),
+                /*children: [
+                    {
+                        path: "edit"
+                        component
+                    }
+                ]*/
             }
         ]
     }

@@ -24,9 +24,9 @@
 </template>
 
 <script lang="ts" setup>
-
 import Category from "@/components/Category.vue";
-import AppTitle from "@/components/AppTitle.vue";</script>
+import AppTitle from "@/components/AppTitle.vue";
+</script>
 
 <style scoped>
 

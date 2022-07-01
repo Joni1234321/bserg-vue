@@ -1,17 +1,16 @@
 <template>
-	<div class="card">
-		<p v-if="false" class="date"> {{ date }}</p>
-		<h1 class="title">{{ title }}</h1>
-		<p class="description"> {{ description }}</p>
+	<div :class="['card',{'reduced': reduced}]">
+		<p v-if="false" class="date"> {{ project.date }}</p>
+		<h1 class="title">{{ project.title }}</h1>
+		<p v-if="!reduced" class="description"> {{ project.description }}</p>
 	</div>
 </template>
 
 <script lang="ts" setup>
 
 defineProps<{
-	title: string,
-	description?: string,
-	date?: string,
+	project: Project,
+	reduced?: boolean,
 }>()
 
 </script>
@@ -20,15 +19,24 @@ defineProps<{
 .title {
 	font-size: 1.5em;
 	font-weight: bold;
-	color: black;
 	text-align: center;
 	border-bottom: 7px solid hsl(100, 100%, 30%);
+}
+.card.reduced>.title{
+	font-weight: normal;
+	font-size: 1em;
+	text-align: start;
+	border-bottom-width: 3px;
 }
 
 .card {
 	padding: 0 1em 1em 1em;
 	border-radius: 4px;
 	border: 3px solid black;
+}
+.card.reduced {
+	border-radius: 2px;
+	border-width: 1px;
 }
 
 .card:hover {
