@@ -1,11 +1,13 @@
 <template>
 	<div>
 		<Spinner v-if="loading" loading/>
-		<ProjectCard v-else v-for="project in projects"
-		             :project="project"
-		             @click="router.push('/projects/i/' + project._id.$oid)"
-		             :reduced="reduced"
-		/>
+		<div v-else v-for="project in projects">
+			<ProjectCard
+			             :project="project"
+			             @click="router.push('/projects/i/' + project._id.$oid)"
+			             :reduced="reduced"
+			/>
+		</div>
 	</div>
 </template>
 

@@ -12,7 +12,7 @@
 
 			<br><br>
 			<input style="width: 10em;" type="submit" value="submit">
-			<h2>{{ response_date }} - {{ response }}</h2>
+			<h2>{{ created_title }} - {{ response_date }} - {{ response }}</h2>
 		</form>
 	</div>
 </template>
@@ -27,6 +27,7 @@ const project = ref({} as Project)
 // Feedback
 const response = ref("")
 const response_date = ref("")
+const created_title = ref("")
 const showForm = ref(true)
 
 const emits = defineEmits<{
@@ -38,6 +39,7 @@ function submit () {
 	backend.createProject(project.value).then(async r => {
 		response.value = r
 		response_date.value = new Date().toLocaleTimeString()
+		created_title.value = project.value.title
 		emits("refresh")
 		showForm.value = false
 		await nextTick()
