@@ -14,6 +14,9 @@ class Backend {
     public async deleteProject (objectId: string) {
         return (await axios.delete(this.projectURL + objectId)).data
     }
+    public async updateProject (project: Project) {
+        return (await axios.put(this.projectURL + project._id?.$oid, project)).data
+    }
 
     public async createProject (project: Project) {
         return (await axios.post(this.projectURL, project)).data

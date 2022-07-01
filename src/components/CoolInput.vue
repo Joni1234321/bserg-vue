@@ -3,6 +3,7 @@
 		<label> {{ label }} </label>
 		<component :is="textarea ? 'textarea' : 'input'"
 		           class="input"
+		           :value="value"
 		           :pattern="pattern"
 		           :required="required"
 		           @input="handleInput"
@@ -18,6 +19,7 @@ const emits = defineEmits<{
 }>()
 defineProps<{
 	label : string,
+	value?: string,
 	pattern? : string,
 	error? : string,
 	textarea?: boolean,

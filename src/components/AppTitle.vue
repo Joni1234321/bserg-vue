@@ -28,7 +28,7 @@ defineProps<{
 	display: inline;
 	font-style: italic;
 	position: relative;
-	top: -2em;
-	left: 4em;
+	top: -1.5em;
+	left: 6em;
 }
 </style>

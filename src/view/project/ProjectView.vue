@@ -1,12 +1,12 @@
 <template>
-	<Spinner :loading="loading"/>
-	<AppTitle :header="project.title ?? ''"/>
-	<h2> {{ project.description }}</h2>
+	<Spinner v-if="loading" loading/>
+	<RouterView v-else
+		:project="project"
+	/>
 </template>
 
 <script lang="ts" setup>
-import AppTitle from "@/components/AppTitle.vue";
-import {computed, onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import router from "@/index";
 import backend from "@/backend";
 import Spinner from "@/components/Spinner.vue";

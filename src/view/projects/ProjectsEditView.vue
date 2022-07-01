@@ -6,8 +6,10 @@
 			</button>
 		</div>
 		<div class="projects">
-			<div v-for="(project,i) in projects">
+			<Spinner v-if="loading" loading/>
+			<div v-else v-for="(project,i) in projects">
 				<ProjectCard
+					:class="{'selected': checkboxes[i]}"
 					:project="project"
 					@click="checkboxes[i] = !checkboxes[i]"
 					reduced
@@ -20,8 +22,9 @@
 
 <script lang="ts" setup>
 import ProjectCard from "@/components/Projects/ProjectCard.vue";
-import {computed, defineEmits, ref} from "vue";
+import {computed, defineEmits, inject, ref, watchEffect} from "vue";
 import backend from "@/backend";
+import Spinner from "@/components/Spinner.vue";
 
 const props = defineProps<{
 	projects: Project[],
@@ -30,17 +33,22 @@ const emits = defineEmits<{
 	(name: "refresh") : void,
 }>();
 
+const loading = inject("loading-projects", false)
+
 const checkboxes = ref([] as boolean[])
-computed(() => checkboxes.value = new Array(props.projects.length).fill(false))
+
+watchEffect(() => {
+	checkboxes.value = new Array(props.projects.length).fill(false)
+	console.log(props.projects);
+})
 
 const elementsToBeDeleted = computed(() => {
 	const re : number[] = []
 	checkboxes.value.forEach((b,i) => { if (b) re.push(i)})
 	return re
 })
-
 function deleteProjects () {
-	elementsToBeDeleted.value.forEach(el => {
+	elementsToBeDeleted.value.forEach((el, i, a) => {
 		const project : Project = props.projects[el]
 		if (!confirm("YOU SURE YOU WANT TO DELETE\n" + project.title))
 			return
@@ -48,9 +56,12 @@ function deleteProjects () {
 		if (!project._id?.$oid)
 			alert("PROJECT DOES NOT HAVE ID, WHICH SHOULD BE IMPOSSIBLE\n" + project.title)
 		else
-			backend.deleteProject(project._id.$oid).then(r => console.log(r))
+			backend.deleteProject(project._id.$oid).then(r => {
+				console.log(r)
+				emits('refresh')
+			})
 	})
-	emits('refresh')
+
 }
 
 </script>
@@ -69,6 +80,12 @@ function deleteProjects () {
 	top: -5px;
 	right: -5px;
 }
+.selected {
+	opacity: 0.6;
+	background-color: black;
+	color: white;
+}
+
 .buttons {
 	display: grid;
 	justify-content: center;

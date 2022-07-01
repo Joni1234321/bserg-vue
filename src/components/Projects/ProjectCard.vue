@@ -37,6 +37,7 @@ defineProps<{
 .card.reduced {
 	border-radius: 2px;
 	border-width: 1px;
+	overflow: hidden;
 }
 
 .card:hover {

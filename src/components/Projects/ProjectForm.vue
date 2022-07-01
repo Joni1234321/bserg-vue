@@ -1,61 +1,62 @@
 <template>
-	<div class="project-adder">
-		<form v-if="showForm" @submit="submit()" onsubmit="return false">
-			<CoolInput @input="(e) => project.title = e"
+	<fieldset :disabled="disabled">
+		<form @submit="emits('submit', project)" onsubmit="return false">
+			<CoolInput :value="defaultProject?.title"
+			           @input="(e) => project.title = e"
 			           label="title" required/>
-			<CoolInput @input="(e) => project.description = e"
+			<CoolInput :value="defaultProject?.description"
+			           @input="(e) => project.description = e"
 			           label="description" textarea/>
-			<CoolInput @input="(e) => project.url = e"
+			<CoolInput :value="defaultProject?.url"
+			           @input="(e) => project.url = e"
 			           label="url name" pattern="^(\w|\d)*$"/>
-			<CoolInput @input="(e) => project.date = e"
+			<CoolInput :value="defaultProject?.date"
+			           @input="(e) => project.date = e"
 			           label="date"/>
 
-			<br><br>
-			<input style="width: 10em;" type="submit" value="submit">
-			<h2>{{ created_title }} - {{ response_date }} - {{ response }}</h2>
+			<input style=""
+			       type="submit" :value="submitText ?? 'submit'">
 		</form>
-	</div>
+	</fieldset>
 </template>
 
 <script lang="ts" setup>
 import CoolInput from "@/components/CoolInput.vue";
-import {nextTick, ref} from "vue";
-import backend from "@/backend";
+import {ref} from "vue";
 
-const project = ref({} as Project)
-
-// Feedback
-const response = ref("")
-const response_date = ref("")
-const created_title = ref("")
-const showForm = ref(true)
-
+const props = defineProps<{
+	defaultProject?: Project,
+	disabled?: boolean,
+	submitText?: string,
+}>()
 const emits = defineEmits<{
-	(name: "refresh") : void
+	(name: "submit", project: Project) : void
 }>()
 
-function submit () {
-	// TODO: IMPLEMENT SUCCESS AND FAILURE FEEDBACK
-	backend.createProject(project.value).then(async r => {
-		response.value = r
-		response_date.value = new Date().toLocaleTimeString()
-		created_title.value = project.value.title
-		emits("refresh")
-		showForm.value = false
-		await nextTick()
-		showForm.value = true
-	})
-}
+const project = ref({...props.defaultProject} as Project)
 
 </script>
 
 <style scoped>
-.project-adder {
+form {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
 	gap: 10px;
 }
 
+fieldset {
+	border: none;
+}
 
+
+input[type=submit] {
+	margin-top: 10px;
+	font-size: 1.5em;
+	color:white;
+	background-color: #C70039;
+	border: none;
+	border-radius: 10px;
+	width: 5em;
+}
 </style>

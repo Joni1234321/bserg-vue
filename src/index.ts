@@ -49,14 +49,20 @@ const router = createRouter(
             },
             {
                 path: "/projects/i/:url",
-                name: "project.show",
-                component: () => import("@/view/ProjectView.vue"),
-                /*children: [
+                redirect: {name: "project.show"},
+                component: () => import("@/view/project/ProjectView.vue"),
+                children: [
                     {
-                        path: "edit"
-                        component
+                        path: "",
+                        name: "project.show",
+                        component: () => import("@/view/project/ProjectShowView.vue")
+                    },
+                    {
+                        path: "edit",
+                        name: "project.edit",
+                        component: () => import("@/view/project/ProjectEditView.vue")
                     }
-                ]*/
+                ]
             },
             {
                 path: "/:catchAll(.*)",

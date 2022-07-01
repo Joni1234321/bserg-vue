@@ -2,11 +2,13 @@
 	<div class="view">
 		<div>
 			<h1> Form </h1>
-			<ProjectForm @refresh="emits('refresh')"/>
+			<ProjectForm v-if="showForm" @submit="p => submit(p)" :disabled="fetching"/>
 		</div>
 		<div>
 			<h1> Projects </h1>
-			<ProjectList class="projects" :projects="projects" :loading="loading"
+			<ProjectList class="projects"
+			             :projects="projects"
+			             :loading="loading"
 			             reduced/>
 		</div>
 	</div>
@@ -15,6 +17,8 @@
 <script lang="ts" setup>
 import ProjectForm from "@/components/Projects/ProjectForm.vue";
 import ProjectList from "@/components/Projects/ProjectList.vue";
+import backend from "@/backend";
+import {nextTick, ref} from "vue";
 
 defineProps<{
 	projects: Project[],
@@ -24,6 +28,23 @@ defineProps<{
 const emits = defineEmits<{
 	(name: "refresh") : void,
 }> ()
+
+const showForm = ref(true)
+const fetching = ref(false)
+
+function submit (project: Project) {
+	fetching.value = true
+
+	// TODO: IMPLEMENT SUCCESS AND FAILURE FEEDBACK
+	backend.createProject(project).then(async r => {
+		emits("refresh")
+		showForm.value = false
+		await nextTick()
+		showForm.value = true
+		fetching.value = false
+	})
+}
+
 </script>
 
 <style scoped>
