@@ -22,7 +22,8 @@ defineProps<{
 	text-align: center;
 	border-bottom: 7px solid hsl(100, 100%, 30%);
 }
-.card.reduced>.title{
+
+.card.reduced > .title {
 	font-weight: normal;
 	font-size: 1em;
 	text-align: start;
@@ -34,6 +35,7 @@ defineProps<{
 	border-radius: 4px;
 	border: 3px solid black;
 }
+
 .card.reduced {
 	border-radius: 2px;
 	border-width: 1px;
@@ -42,7 +44,7 @@ defineProps<{
 
 .card:hover {
 	cursor: pointer;
-	box-shadow: 2px 2px hsla(0,0%,0%,0.2);
+	box-shadow: 2px 2px hsla(0, 0%, 0%, 0.2);
 }
 
 .date {

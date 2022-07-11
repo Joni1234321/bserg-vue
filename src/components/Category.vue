@@ -4,7 +4,7 @@
 		<div class="title">
 			<p>{{ title }}</p>
 		</div>
-		<div class="slot">
+		<div class="main">
 			<slot/>
 		</div>
 	</div>
@@ -24,25 +24,17 @@ defineProps<{
 <style scoped>
 .category {
 	padding-bottom: 2em;
-}
-
-.category:nth-child(even) {
-	background-color: #fff;
-}
-
-.category:nth-child(odd) {
-	background-color: #eee;
-}
-
-.category > * {
-	margin: 0 auto;
-	width: 80%;
-}
-
-.category, .title > p {
 	border-width: 2px;
 	border-style: solid hidden;
 	border-color: transparent;
+}
+
+.category:nth-child(even) {
+	background-color: #FFF;
+}
+
+.category:nth-child(odd) {
+	background-color: #EEE;
 }
 
 .has-url:hover {
@@ -71,7 +63,7 @@ defineProps<{
 
 }
 
-.slot {
+.main {
 	top: -1.5em;
 }
 </style>

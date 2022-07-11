@@ -8,17 +8,16 @@
 
 <script lang="ts" setup>
 import AppTitle from "@/components/AppTitle.vue";
+import type {Ref} from "vue"
 import {onMounted, provide, ref} from "vue";
 import backend from "@/backend";
-import type {Ref} from "vue"
-import Spinner from "@/components/Spinner.vue";
 
-const projects: Ref<Project[]> = ref([])
-const loading = ref(false)
+const projects : Ref<Project[]> = ref([])
+const loading : Ref<boolean> = ref(false)
 provide("loading-projects", loading)
-onMounted( () => loadProjects())
+onMounted(() => loadProjects())
 
-function loadProjects () {
+function loadProjects() {
 	loading.value = true
 	backend.getProjects().then(r => {
 		projects.value = r

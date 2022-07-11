@@ -2,9 +2,9 @@
 	<div style="display: flex; align-items: center; flex-direction: column;">
 		<h1> Edit - {{ project.title }} </h1>
 		<ProjectForm :default-project="project"
-		             @submit="p => update(p)"
-		             submit-text="update"
 		             :disabled="fetching"
+		             submit-text="update"
+		             @submit="p => update(p)"
 		/>
 	</div>
 </template>
@@ -22,14 +22,15 @@ defineProps<{
 }>()
 
 const fetching = ref(false)
-function update (project: Project) {
+
+function update(project: Project) {
 	fetching.value = true
 	backend.updateProject(project).then(r => {
 		console.log(r)
 		fetching.value = false
 		// Go back to project page
-		router.push({name: "project.show", params: {url: project._id?.$oid }})
-	} )
+		router.push({name: "project.show", params: {url: project._id?.$oid}})
+	})
 }
 </script>
 

@@ -1,21 +1,21 @@
 <template>
 	<fieldset :disabled="disabled">
-		<form @submit="emits('submit', project)" onsubmit="return false">
+		<form onsubmit="return false" @submit="emits('submit', project)">
 			<CoolInput :value="defaultProject?.title"
-			           @input="(e) => project.title = e"
-			           label="title" required/>
+			           label="title"
+			           required @input="(e) => project.title = e"/>
 			<CoolInput :value="defaultProject?.description"
-			           @input="(e) => project.description = e"
-			           label="description" textarea/>
+			           label="description"
+			           textarea @input="(e) => project.description = e"/>
 			<CoolInput :value="defaultProject?.url"
-			           @input="(e) => project.url = e"
-			           label="url name" pattern="^(\w|\d)*$"/>
+			           label="url name"
+			           pattern="^(\w|\d)*$" @input="(e) => project.url = e"/>
 			<CoolInput :value="defaultProject?.date"
-			           @input="(e) => project.date = e"
-			           label="date"/>
+			           label="date"
+			           @input="(e) => project.date = e"/>
 
-			<input style=""
-			       type="submit" :value="submitText ?? 'submit'">
+			<input :value="submitText ?? 'submit'"
+			       style="" type="submit">
 		</form>
 	</fieldset>
 </template>
@@ -30,10 +30,11 @@ const props = defineProps<{
 	submitText?: string,
 }>()
 const emits = defineEmits<{
-	(name: "submit", project: Project) : void
+	(name: "submit", project: Project): void
 }>()
 
 const project = ref({...props.defaultProject} as Project)
+project.value.schema_version = 1
 
 </script>
 
@@ -53,7 +54,7 @@ fieldset {
 input[type=submit] {
 	margin-top: 10px;
 	font-size: 1.5em;
-	color:white;
+	color: white;
 	background-color: #C70039;
 	border: none;
 	border-radius: 10px;

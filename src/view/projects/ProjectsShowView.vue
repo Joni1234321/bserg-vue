@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<category title="Ongoing">
-			<ProjectList class="projects" :projects="projects"/>
+			<ProjectList :projects="projects" class="projects"/>
 		</category>
 		<category title="Finished">
 

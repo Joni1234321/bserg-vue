@@ -2,13 +2,14 @@
 	<div class="view">
 		<div>
 			<h1> Form </h1>
-			<ProjectForm v-if="showForm" @submit="p => submit(p)" :disabled="fetching"/>
+			<p class="error">{{ error }}</p>
+			<ProjectForm v-if="showForm" :disabled="fetching" @submit="p => submit(p)"/>
 		</div>
 		<div>
 			<h1> Projects </h1>
-			<ProjectList class="projects"
+			<ProjectList :loading="loading"
 			             :projects="projects"
-			             :loading="loading"
+			             class="projects"
 			             reduced/>
 		</div>
 	</div>
@@ -26,15 +27,15 @@ defineProps<{
 }>()
 
 const emits = defineEmits<{
-	(name: "refresh") : void,
-}> ()
+	(name: "refresh"): void,
+}>()
 
 const showForm = ref(true)
 const fetching = ref(false)
+const error = ref("")
 
-function submit (project: Project) {
+function submit(project: Project) {
 	fetching.value = true
-
 	// TODO: IMPLEMENT SUCCESS AND FAILURE FEEDBACK
 	backend.createProject(project).then(async r => {
 		emits("refresh")
@@ -42,6 +43,10 @@ function submit (project: Project) {
 		await nextTick()
 		showForm.value = true
 		fetching.value = false
+	})
+	.catch(e => {
+		fetching.value = false
+		error.value = e;
 	})
 }
 
@@ -52,14 +57,22 @@ function submit (project: Project) {
 h1 {
 	text-align: center;
 }
+
 .view {
-	display:grid;
+	display: grid;
 	grid-template-columns: minmax(400px, 1fr) 200px;
 }
+
 .projects {
 	border-left: 2px solid black;
 	display: grid;
 	gap: 10px;
 	padding: 0 10px;
+}
+
+.error {
+	font-size: 1.5em;
+
+	background-color: red;
 }
 </style>

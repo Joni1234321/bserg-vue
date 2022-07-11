@@ -2,12 +2,12 @@
 	<div>
 		<label> {{ label }} </label>
 		<component :is="textarea ? 'textarea' : 'input'"
-		           class="input"
-		           :value="value"
 		           :pattern="pattern"
 		           :required="required"
-		           @input="handleInput"
-		           autocomplete="off"></component>
+		           :value="value"
+		           autocomplete="off"
+		           class="input"
+		           @input="handleInput"></component>
 		<span> {{ error }} </span>
 	</div>
 </template>
@@ -15,30 +15,33 @@
 <script lang="ts" setup>
 
 const emits = defineEmits<{
-	(name: "input", e : any) : void
+	(name: "input", e: any): void
 }>()
 defineProps<{
-	label : string,
+	label: string,
 	value?: string,
-	pattern? : string,
-	error? : string,
+	pattern?: string,
+	error?: string,
 	textarea?: boolean,
 	required?: boolean,
 }>()
-const handleInput = (e : any) => emits("input", e.target.value)
+const handleInput = (e: any) => emits("input", e.target.value)
 </script>
 
 <style scoped>
 div {
-	font-size:1.2em;
+	font-size: 1.2em;
 	width: 20em;
 }
+
 input, label {
 	text-align: center;
 }
+
 input {
 	font-size: inherit;
 }
+
 textarea {
 	resize: vertical;
 	font-size: .7em;
@@ -57,10 +60,11 @@ label {
 	font-size: .9em;
 	display: block;
 }
+
 span {
 	position: absolute;
 	bottom: -1.4em;
-	left:1em;
+	left: 1em;
 	color: red;
 	font-size: 0.7em;
 }

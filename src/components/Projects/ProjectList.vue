@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<Spinner v-if="loading" loading/>
-		<ProjectCard v-else v-for="project in projects"
+		<ProjectCard v-for="project in projects" v-else
 		             :project="project"
-		             @click="router.push('/projects/i/' + project._id.$oid)"
 		             :reduced="reduced"
+		             @click="router.push('/projects/i/' + project._id.$oid)"
 		/>
 	</div>
 </template>

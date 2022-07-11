@@ -1,20 +1,20 @@
 <template>
 	<div>
 		<div class="buttons">
-			<button class="delete" type="button" @click="deleteProjects()" :disabled="elementsToBeDeleted.length === 0">
+			<button :disabled="elementsToBeDeleted.length === 0" class="delete" type="button" @click="deleteProjects()">
 				DELETE {{ elementsToBeDeleted.length }}
 			</button>
 		</div>
-		<div class="projects">
+		<div class="projects main">
 			<Spinner v-if="loading" loading/>
-			<div v-else v-for="(project,i) in projects">
+			<div v-for="(project,i) in projects" v-else>
 				<ProjectCard
 					:class="{'selected': checkboxes[i]}"
 					:project="project"
-					@click="checkboxes[i] = !checkboxes[i]"
 					reduced
+					@click="checkboxes[i] = !checkboxes[i]"
 				/>
-				<input class="select" v-model="checkboxes[i]" type="checkbox"/>
+				<input v-model="checkboxes[i]" class="select" type="checkbox"/>
 			</div>
 		</div>
 	</div>
@@ -30,7 +30,7 @@ const props = defineProps<{
 	projects: Project[],
 }>()
 const emits = defineEmits<{
-	(name: "refresh") : void,
+	(name: "refresh"): void,
 }>();
 
 const loading = inject("loading-projects", false)
@@ -39,17 +39,19 @@ const checkboxes = ref([] as boolean[])
 
 watchEffect(() => {
 	checkboxes.value = new Array(props.projects.length).fill(false)
-	console.log(props.projects);
 })
 
 const elementsToBeDeleted = computed(() => {
-	const re : number[] = []
-	checkboxes.value.forEach((b,i) => { if (b) re.push(i)})
+	const re: number[] = []
+	checkboxes.value.forEach((b, i) => {
+		if (b) re.push(i)
+	})
 	return re
 })
-function deleteProjects () {
+
+function deleteProjects() {
 	elementsToBeDeleted.value.forEach((el, i, a) => {
-		const project : Project = props.projects[el]
+		const project: Project = props.projects[el]
 		if (!confirm("YOU SURE YOU WANT TO DELETE\n" + project.title))
 			return
 
@@ -68,18 +70,19 @@ function deleteProjects () {
 
 <style scoped>
 .projects {
-	width: 80%;
 	display: grid;
 	grid-template-columns: repeat(auto-fit, 200px);
 	margin: auto;
 	justify-content: center;
 	gap: 30px;
 }
+
 .select {
 	position: absolute;
 	top: -5px;
 	right: -5px;
 }
+
 .selected {
 	opacity: 0.6;
 	background-color: black;
@@ -101,10 +104,12 @@ function deleteProjects () {
 	border: none;
 	border-radius: 4px;
 }
+
 .delete:hover:not(:disabled) {
 	box-shadow: 2px 2px grey;
 	cursor: pointer;
 }
+
 .delete:disabled {
 	background-color: grey;
 }
