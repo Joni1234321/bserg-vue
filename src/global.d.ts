@@ -11,12 +11,17 @@ declare global {
         description?: string,
         date?: string,
         url?: string,
-        sections: {
-            title: string,
-            fields: {
-                type: string,
-                value: string | number
-            }[]
+        details?: {
+            schema_version: number
+            sections?: Section[]
+        }
+    }
+
+    interface Section {
+        title: string,
+        fields: {
+            type: string,
+            value: string | number
         }[]
     }
 }

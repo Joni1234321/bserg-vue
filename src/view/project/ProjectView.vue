@@ -21,7 +21,6 @@ onMounted(() => {
 	backend.getProject(router.currentRoute.value.params.url as string).then(p => {
 		project.value = p
 		loading.value = false
-		console.log(p);
 	}).catch(e => {
 		console.log("Failed getting project:");
 		console.error(e)

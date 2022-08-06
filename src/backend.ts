@@ -3,6 +3,7 @@ import axios from "axios"
 class Backend {
     public url: string = "http://localhost:5000/api/v1"
     public projectURL: string = this.url + "/project/"
+    public sectionURL = (object_id : string) => this.projectURL + object_id + "/section/"
 
     // Projects
     public async getProjects() {
@@ -26,8 +27,8 @@ class Backend {
     }
 
     // Project sections
-    public async addField(objectId: string, sectionIndex: number) {
-        return (await axios.post(this.projectURL)).data
+    public async createSection(objectId: string, sectionIndex: number, section : Section) {
+        return (await axios.post(this.sectionURL(objectId) + sectionIndex, section)).data
     }
 }
 
