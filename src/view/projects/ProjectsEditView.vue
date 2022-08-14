@@ -59,7 +59,6 @@ function deleteProjects() {
 			alert("PROJECT DOES NOT HAVE ID, WHICH SHOULD BE IMPOSSIBLE\n" + project.title)
 		else
 			backend.deleteProject(project._id.$oid).then(r => {
-				console.log(r)
 				emits('refresh')
 			})
 	})
