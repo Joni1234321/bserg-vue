@@ -29,6 +29,16 @@ class Backend {
     public async addField(objectId: string, sectionIndex: number) {
         return (await axios.post(this.projectURL)).data
     }
+
+
+    // MIL
+    public milURL: string = this.url + "/mil/"
+    public async getOrgs() {
+        return (await axios.get(this.milURL)).data
+    }
+    public async getOrg(objectId: string) {
+        return (await axios.get(this.milURL + objectId)).data
+    }
 }
 
 const backend = new Backend()

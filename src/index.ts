@@ -65,6 +65,15 @@ const router = createRouter(
                 ]
             },
             {
+                path: "/mil",
+                name: "mil",
+                component: () => import("@/mil/view/OrgOverviewView.vue")
+            },
+            {
+                path: "/mil/i/:url",
+                component: () => import("@/mil/view/OrgView.vue")
+            },
+            {
                 path: "/:catchAll(.*)",
                 component: () => import("@/view/NotFoundView.vue"),
             },
