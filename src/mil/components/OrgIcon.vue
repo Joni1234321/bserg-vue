@@ -71,7 +71,7 @@ interface TagsType {
 
 
 
-function getTypes (tags: string[]) {
+function getTypes (tags: string[]) : any {
 	const out: TagsType = {notes: ""}
 
 	for (let i = 0; i < tags.length; i++) {

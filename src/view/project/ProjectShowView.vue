@@ -8,7 +8,7 @@
 			/>
 		</div>
 		<div class="main">
-			<div class="section" v-for="(section,i) in project.details.sections">
+			<div class="section" v-for="(section,i) in project.details?.sections">
 				<p class="section-title">{{ section.title }}</p>
 				<div class="section-field" v-for="(field, fieldIndex) in section.fields" :style="{borderLeftColor: getBorderColor(field.type)}">
           <button class="remove-button" @click="removeField(i, fieldIndex)"> x </button>
