@@ -34,10 +34,10 @@ class Backend {
 
     // MIL
     public milURL: string = this.url + "/mil/"
-    public async getOrgs() {
+    public async getOrganizations() {
         return (await axios.get(this.milURL)).data
     }
-    public async getOrg(objectId: string) {
+    public async getOrganization(objectId: string) {
         return (await axios.get(this.milURL + objectId)).data
     }
 }

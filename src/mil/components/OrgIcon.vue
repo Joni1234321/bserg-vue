@@ -1,11 +1,11 @@
 <template>
-	<svg viewBox="0 0 200 170">
+	<svg viewBox="0 0 200 170" width="100%" height="100%" :class="{link: link}">
 		<g transform="translate(25 40)">
 			<text v-if="sizeString" systemLanguage="en" style="font-size:26px;letter-spacing:5px" x="77.5" y="-5">
 				{{ sizeString }}
 			</text>
 
-			<rect id="border" width="150" height="100"/>
+			<rect id="border" width="150" height="100" :class="{shadow: link}"/>
 
 			<path v-if="types.isInfantry" d="M 0 0 L 150 100 M 0 100 L 150 0"/>
 			<path
@@ -51,9 +51,7 @@
 			<text x="145" y="25" style="font-size:10px; text-anchor: end;"> {{types.cornerText}} </text>
 
 			<text x="75" y="95" style="fill:red;"> {{ types.notes }} </text>
-
 		</g>
-
 	</svg>
 </template>
 
@@ -62,13 +60,15 @@ import {computed} from "vue";
 
 const props = defineProps<{
 	typeTags: string[],
-	sizeString?: string
+	sizeString?: string,
+  link?: boolean,
 }>()
 
 interface TagsType {
 	notes: string,
 	[key: string]: boolean | string,
 }
+
 
 
 function getTypes (tags: string[]) {
@@ -147,5 +147,13 @@ text {
 	text-anchor:middle;
 	fill: black;
 	stroke-width: .3px;
+}
+
+.shadow {
+  filter: drop-shadow( 6px 6px 6px rgba(0, 0, 0, 1));
+}
+.link:hover {
+  filter: invert(0.5);
+  cursor: pointer;
 }
 </style>

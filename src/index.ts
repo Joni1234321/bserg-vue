@@ -48,7 +48,7 @@ const router = createRouter(
                 component: () => import("@/view/AboutView.vue")
             },
             {
-                path: "/projects/i/:url",
+                path: "/projects/:project_id",
                 redirect: {name: "project.show"},
                 component: () => import("@/view/project/ProjectView.vue"),
                 children: [
@@ -67,12 +67,27 @@ const router = createRouter(
             {
                 path: "/mil",
                 name: "mil",
-                component: () => import("@/mil/view/OrgOverviewView.vue")
+                component: () => import("@/mil/view/MilView.vue"),
+                children: [
+                    {
+                        path: "",
+                        component: () => import("@/mil/view/MilObjectsView.vue"),
+                    },
+                    {
+                        path: ":organization_id",
+                        component: () => import("@/mil/view/DivisionView.vue"),
+                        children: [
+                            {
+                                path: ":child_route*",
+                                component: () => import("@/mil/view/OrganizationView.vue")
+                            }
+                        ],
+                    },
+
+
+                ]
             },
-            {
-                path: "/mil/i/:url",
-                component: () => import("@/mil/view/OrgView.vue")
-            },
+
             {
                 path: "/:catchAll(.*)",
                 component: () => import("@/view/NotFoundView.vue"),

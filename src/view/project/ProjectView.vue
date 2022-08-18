@@ -18,7 +18,7 @@ const loading : Ref<boolean> = ref(false)
 
 onMounted(() => {
 	loading.value = true
-	backend.getProject(router.currentRoute.value.params.url as string).then(p => {
+	backend.getProject(router.currentRoute.value.params.project_id as string).then(p => {
 		project.value = p
 		loading.value = false
 	}).catch(e => {

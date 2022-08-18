@@ -4,7 +4,7 @@
 		<ProjectCard v-for="project in projects" v-else
 		             :project="project"
 		             :reduced="reduced"
-		             @click="router.push('/projects/i/' + project._id.$oid)"
+		             @click="router.push('/projects/' + project._id.$oid)"
 		/>
 	</div>
 </template>
