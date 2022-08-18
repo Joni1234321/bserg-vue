@@ -1,7 +1,8 @@
 import axios from "axios"
 
 class Backend {
-    public url: string = "http://localhost:5000/api/v1"
+    public url: string = "http://157.90.224.86:5000/api/v1"
+
     public projectURL: string = this.url + "/project/"
     public sectionURL = (object_id : string) => this.projectURL + object_id + "/section/"
 
