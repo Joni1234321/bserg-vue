@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const remote = false
+const remote = true
 class Backend {
     public url: string = "http://" +  (remote ? "157.90.224.86" : "localhost") + ":5000/api/v1"
 
