@@ -66,11 +66,11 @@ const router = createRouter(
             },
             {
                 path: "/mil",
-                name: "mil",
                 component: () => import("@/mil/view/MilView.vue"),
                 children: [
                     {
                         path: "",
+                        name: "mil",
                         component: () => import("@/mil/view/MilObjectsView.vue"),
                     },
                     {
