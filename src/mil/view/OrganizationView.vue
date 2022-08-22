@@ -1,12 +1,12 @@
 <template>
 	<div v-if="organization" class="organization-view" style="">
-    <div class="detailed-input">
-      <label for="detailed-input"> DETAILED </label>
-      <input name="detailed-input" type="checkbox" v-model="detailed">
-    </div>
-    <div>
-      <OrgList :organization="organization" class="organization-list" :detailed="detailed"/>
-    </div>
+		<div class="detailed-input">
+			<label for="detailed-input"> DETAILED </label>
+			<input v-model="detailed" name="detailed-input" type="checkbox">
+		</div>
+		<div>
+			<OrgList :detailed="detailed" :organization="organization" class="organization-list"/>
+		</div>
 	</div>
 </template>
 
@@ -16,30 +16,33 @@ import {ref} from "vue";
 
 const detailed = ref(false)
 defineProps<{
-  organization: any | undefined
+	organization: any | undefined
 }>()
 
 </script>
 
 <style scoped>
 .detailed-input {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 20px;
+	display: inline-flex;
+	flex-direction: column;
+	gap: 10px;
+	align-items: center;
+	margin-bottom: 20px;
 }
-.detailed-input>* {
-  font-size: 1.5em;
-  font-weight: bold;
+
+.detailed-input > * {
+	font-size: 1.5em;
+	font-weight: bold;
 }
+
 input {
-  width: 1em;
-  height: 1em;
+	width: 1em;
+	height: 1em;
 }
+
 label {
-  writing-mode:vertical-rl;
-  text-align: center;
+	writing-mode: vertical-rl;
+	text-align: center;
 }
 
 

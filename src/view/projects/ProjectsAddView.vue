@@ -44,10 +44,10 @@ function submit(project: Project) {
 		showForm.value = true
 		fetching.value = false
 	})
-	.catch(e => {
-		fetching.value = false
-		error.value = e;
-	})
+		.catch(e => {
+			fetching.value = false
+			error.value = e;
+		})
 }
 
 </script>

@@ -3,11 +3,12 @@
 	           :value="text"
 	           @keyup.enter="emits('submit')"
 	           @keyup.esc="emits('cancel')"
-	>{{ text }}</component>
+	>{{ text }}
+	</component>
 </template>
 
 <script lang="ts" setup>
-import {computed, ref} from "vue";
+import {computed} from "vue";
 
 const props = defineProps<{
 	text?: string,

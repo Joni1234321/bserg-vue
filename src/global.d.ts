@@ -5,7 +5,8 @@ declare global {
     interface DBSchema {
         schema_version: number,
     }
-    interface Project extends DBSchema{
+
+    interface Project extends DBSchema {
         _id?: ObjectId,
         title: string,
         description?: string,

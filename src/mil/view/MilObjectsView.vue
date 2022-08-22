@@ -1,51 +1,133 @@
 <template>
-  <div class="mil-view">
-    <div
-      v-for="org in orgs"
-      @click="router.push('/mil/' + org._id.$oid)"
-      class="mil-object"
-    >
-      <h2>{{ org.country }}</h2>
-      <h2>{{ org.year }}</h2>
-      <h2>{{ org.name }}</h2>
-    </div>
-  </div>
+	<div>
+		<div class="filters">
+			<div class="filter">
+				<div @click="showCountry('all')">country</div>
+				<div v-for="country in ['ussr', 'usa', 'germany']"
+				     :style="{backgroundColor: getCountryColor(country)}"
+					@click="showCountry(country)"
+				>
+					{{ country.toUpperCase() }}
+				</div>
+			</div>
+
+		</div>
+		<table>
+			<thead>
+				<tr>
+					<th v-for="[name, getProperty] in sorts"
+						@click="sortBy(name, getProperty)"> {{ name }} {{ currentSort === name ? (directionUp ? "↑" : "↓") : ""}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr
+					v-for="org in organizationsFiltered"
+					@click="router.push('/mil/' + org._id.$oid)"
+					:style="{backgroundColor: getCountryColor(org.country)}"
+				>
+					<td>{{ org.country.toUpperCase() }}</td>
+					<td> <OrgIcon :type-tags="getTypeTags(org.type)" :size-string="getSizeString(org.size)"/></td>
+					<td>{{ org.year }}</td>
+					<td>{{ org.name}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </template>
 
 <script lang="ts" setup>
 import backend from "@/backend";
-import {onMounted, provide, ref} from "vue";
 import type {Ref} from "vue";
+import {onMounted, ref} from "vue";
 import router from "@/index";
+import OrgIcon from "@/mil/components/OrgIcon.vue";
+import {getTypeTags, getSizeString} from "@/mil/shared";
 
 
-const orgs : Ref<any[]> = ref([])
-const loading : Ref<boolean> = ref(false)
+const allOrganizations = ref([] as any[])
+const organizationsFiltered = ref([] as any[])
+const loading = ref(false as boolean)
 
 onMounted(() => loadOrganizations())
 
 function loadOrganizations() {
 	loading.value = true
 	backend.getOrganizations().then(r => {
-		orgs.value = r
+		allOrganizations.value = r
+		organizationsFiltered.value = r
 		loading.value = false
 	})
+}
+
+function showCountry (country: string) {
+	if (country === "all") organizationsFiltered.value = allOrganizations.value
+	else organizationsFiltered.value = allOrganizations.value.filter((org: any) => org.country === country)
+}
+
+function getCountryColor (country: string) {
+	switch(country) {
+		case "ussr":
+			return "rgba(192,30,30,0.90)"
+		case "usa":
+			return "rgba(30,100,190,0.9)"
+		case "germany":
+			return "rgba(215,215,215,0.9)"
+		default:
+			return "green"
+	}
+}
+
+const sorts = [['country', org => org.country], ['icon', org => org.name], ['year', org => org.year], ['name', org => org.name]]
+const directionUp = ref(true as boolean)
+const currentSort = ref("")
+function sortBy (sortCategory: string, getProperty: (any) => any) {
+	if (currentSort.value === sortCategory) {
+		directionUp.value = !directionUp.value
+		organizationsFiltered.value.reverse()
+	}
+	else {
+		directionUp.value = true
+		organizationsFiltered.value.sort((a,b) => getProperty(b) - getProperty(a))
+	}
+	currentSort.value = sortCategory
 }
 
 </script>
 
 <style scoped>
+.filter {
+	border-bottom: 2px solid black;
+}
+.filter>* {
+	font-size: 1.5em;
+	display: inline;
+}
+.filter>div {
+	padding: 0 1em;
+	border-radius: 10px;
+	margin: 0 .5em;
+}
 
-.mil-view>* {
-	font-size: 1em;
-	padding: 1em 2em;
-	margin: 10px 0;
+table {
+	margin-top: 10px;
+	width: 100%;
+	font-size: 2em;
+	text-align: center;
+	border-collapse: collapse;
+}
+th {
+	font-size: .8em;
+	background-color: rgba(44, 62, 80, 0.3);
+}
+th, td{
+	border: 1px solid rgb(0, 0, 0);
+}
+tbody tr:hover, th:hover, .filter>div:hover{
+	opacity: .8;
 	cursor: pointer;
 }
-
-.mil-object {
-  background-color: #ecf0f3;
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
+td {
+	height: 3em;
 }
+
 </style>

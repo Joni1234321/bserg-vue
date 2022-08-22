@@ -12,8 +12,8 @@ import type {Ref} from "vue"
 import {onMounted, provide, ref} from "vue";
 import backend from "@/backend";
 
-const projects : Ref<Project[]> = ref([])
-const loading : Ref<boolean> = ref(false)
+const projects: Ref<Project[]> = ref([])
+const loading: Ref<boolean> = ref(false)
 provide("loading-projects", loading)
 onMounted(() => loadProjects())
 

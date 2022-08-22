@@ -1,11 +1,15 @@
 import axios from "axios"
 
 const remote = true
+
 class Backend {
-    public url: string = "http://" +  (remote ? "157.90.224.86" : "localhost") + ":5000/api/v1"
+    public url: string = "http://" + (remote ? "157.90.224.86" : "localhost") + ":5000/api/v1"
 
     public projectURL: string = this.url + "/project/"
-    public sectionURL = (object_id : string) => this.projectURL + object_id + "/section/"
+    // MIL
+    public milURL: string = this.url + "/mil/"
+
+    public sectionURL = (object_id: string) => this.projectURL + object_id + "/section/"
 
     // Projects
     public async getProjects() {
@@ -29,16 +33,14 @@ class Backend {
     }
 
     // Project sections
-    public async createSection(objectId: string, sectionIndex: number, section : Section) {
+    public async createSection(objectId: string, sectionIndex: number, section: Section) {
         return (await axios.post(this.sectionURL(objectId) + sectionIndex, section)).data
     }
 
-
-    // MIL
-    public milURL: string = this.url + "/mil/"
     public async getOrganizations() {
         return (await axios.get(this.milURL)).data
     }
+
     public async getOrganization(objectId: string) {
         return (await axios.get(this.milURL + objectId)).data
     }
