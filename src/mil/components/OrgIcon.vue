@@ -6,10 +6,9 @@
 			</text>
 
 			<rect id="border" width="150" height="100" :class="{shadow: link}"/>
-
 			<path v-if="types.isInfantry" d="M 0 0 L 150 100 M 0 100 L 150 0"/>
 			<path
-				v-if="types.isArmour"
+				v-if="types.isArmor"
 				d="
 				M 50 25 a 20 25 0 1 0 0 50 l 50 0
 				M 100 75 a 20 25 0 1 0 0 -50 l -50 0
@@ -77,12 +76,12 @@ function getTypes (tags: string[]) : any {
 	for (let i = 0; i < tags.length; i++) {
 		const tag = tags[i].toLowerCase()
 		if (tag === "infantry") out.isInfantry = true
-		else if (tag === "armour") out.isArmour = true
+		else if (tag === "armor") out.isArmor = true
 		else if (tag === "artillery")  out.isArtillery = true
 		else if (tag === "anti-tank") out.isAntiTank = true
 		else if (tag === "anti-air") out.isAntiAir = true
 		else if (tag === "reconnaissance") out.isReconnaissance = true
-		else if (tag === "self-propelled gun") { out.isArmour = true; out.isArtillery = true }
+		else if (tag === "self-propelled gun") { out.isArmor = true; out.isArtillery = true }
 		else if (tag === "infantry gun") { out.isInfantry = true; out.isArtillery = true}
 		else if (tag === "mortar") { out.isMortar = true }
 
