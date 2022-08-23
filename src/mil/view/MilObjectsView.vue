@@ -7,7 +7,7 @@
 				     :style="{backgroundColor: getCountryColor(country)}"
 					@click="showCountry(country)"
 				>
-					{{ country.toUpperCase() }}
+					{{ country?.toUpperCase() }}
 				</div>
 			</div>
 
@@ -16,7 +16,8 @@
 			<thead>
 				<tr>
 					<th v-for="[name, getProperty] in sorts"
-						@click="sortBy(name, getProperty)"> {{ name }} {{ currentSort === name ? (directionUp ? "↑" : "↓") : ""}}</th>
+						@click="sortBy(name, getProperty)"> {{ name }}
+						{{ currentSort === name ? (sortAscending ? "▼" : "▲") : "" }}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -25,7 +26,7 @@
 					@click="router.push('/mil/' + org._id.$oid)"
 					:style="{backgroundColor: getCountryColor(org.country)}"
 				>
-					<td>{{ org.country.toUpperCase() }}</td>
+					<td>{{ org.country?.toUpperCase() }}</td>
 					<td> <OrgIcon :type-tags="getTypeTags(org.type)" :size-string="getSizeString(org.size)"/></td>
 					<td>{{ org.year }}</td>
 					<td>{{ org.name}}</td>
@@ -78,16 +79,21 @@ function getCountryColor (country: string) {
 }
 
 const sorts = [['country', org => org.country], ['icon', org => org.name], ['year', org => org.year], ['name', org => org.name]]
-const directionUp = ref(true as boolean)
+const sortAscending = ref(true as boolean)
 const currentSort = ref("")
 function sortBy (sortCategory: string, getProperty: (any) => any) {
 	if (currentSort.value === sortCategory) {
-		directionUp.value = !directionUp.value
+		sortAscending.value = !sortAscending.value
 		organizationsFiltered.value.reverse()
 	}
 	else {
-		directionUp.value = true
-		organizationsFiltered.value.sort((a,b) => getProperty(b) - getProperty(a))
+		sortAscending.value = true
+		organizationsFiltered.value.sort((a,b) =>
+		{
+			if (getProperty(b) === undefined) return 1
+			if (getProperty(a) === undefined) return -1
+			return getProperty(b) > getProperty(a) ? 1 : -1
+		})
 	}
 	currentSort.value = sortCategory
 }
