@@ -18,7 +18,7 @@ for (let i = 0; i < sizesNames.length; i++)
     sizeDict[sizesNames[i]] = i
 
 const sizeTable = ["ø", "o", "oo", "ooo", "oooo", "l", "ll", "lll", "x", "xx", "xxx", "xxxx", "xxxxx"]
-export const getSizeString = (size?: string): string => sizeTable[sizeDict[size?.toLowerCase()] ?? 0]
+export const getSizeString = (size?: string): string => sizeTable[sizeDict[size?.toLowerCase() ?? 0] ?? 0]
 
 export function getChildren(org: any) {
     return org?.children

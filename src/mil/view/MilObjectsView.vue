@@ -16,7 +16,7 @@
 			<thead>
 				<tr>
 					<th v-for="[name, getProperty] in sorts"
-						@click="sortBy(name, getProperty)"> {{ name }}
+						@click="sortBy(name, getProperty)"> {{ name}}
 						{{ currentSort === name ? (sortAscending ? "▼" : "▲") : "" }}</th>
 				</tr>
 			</thead>
@@ -78,10 +78,10 @@ function getCountryColor (country: string) {
 	}
 }
 
-const sorts = [['country', org => org.country], ['icon', org => org.name], ['year', org => org.year], ['name', org => org.name]]
+const sorts : [string, any][]= [['country', (org : any) => org.country], ['icon', (org : any) => org.name], ['year', (org : any) => org.year], ['name', (org : any) => org.name]]
 const sortAscending = ref(true as boolean)
 const currentSort = ref("")
-function sortBy (sortCategory: string, getProperty: (any) => any) {
+function sortBy (sortCategory: string, getProperty: (_: any) => any) {
 	if (currentSort.value === sortCategory) {
 		sortAscending.value = !sortAscending.value
 		organizationsFiltered.value.reverse()
