@@ -51,6 +51,8 @@
 				<circle cx="95" cy="110" r="5"/>
 			</g>
 
+			<rect v-if="types.isMedium || types.isHeavy" width="20" height="100" stroke-width="4" :fill="types.isHeavy ? 'black' : 'transparent' "/>
+
 			<text style="font-size:30px" x="75" y="60"> {{ types.centerText }}</text>
 			<text style="font-size:15px" x="75" y="90"> {{ types.bottomText }}</text>
 			<text style="font-size:15px" x="75" y="25"> {{ types.topText }}</text>
@@ -135,6 +137,8 @@ function getTypes(tags: string[]): any {
 		// MODIFIERS
 		else if (tag === "motorized") out.isMotorized = true
 		else if (tag === "semi-motorized") out.isSemiMotorized = true
+		else if (tag === "medium") out.isMedium = true
+		else if (tag === "heavy") out.isHeavy = true
 
 		// ELSE
 		else out.notes += tag + " "

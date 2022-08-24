@@ -1,11 +1,11 @@
 <template>
 	<div v-if="organization" class="organization-view" style="">
+		<div>
+			<OrgList :detailed="detailed" :organization="organization" class="organization-list"/>
+		</div>
 		<div class="detailed-input">
 			<label for="detailed-input"> DETAILED </label>
 			<input v-model="detailed" name="detailed-input" type="checkbox">
-		</div>
-		<div>
-			<OrgList :detailed="detailed" :organization="organization" class="organization-list"/>
 		</div>
 	</div>
 </template>

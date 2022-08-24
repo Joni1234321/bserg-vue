@@ -76,6 +76,10 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+.hover-fade:hover {
+    opacity: .8;
+    cursor: pointer;
+}
 
 .main {
     width: 80vw;
