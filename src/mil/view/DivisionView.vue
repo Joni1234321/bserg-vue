@@ -161,6 +161,9 @@ function setOrganizationFromURL() {
 	opacity: .7;
 }
 
+.overview .current {
+	border-color: transparent;
+}
 .overview .current>* {
 	font-weight: bold;
 }
