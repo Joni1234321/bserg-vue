@@ -1,26 +1,37 @@
 <template>
 	<div v-if="rootOrganization">
-		<div class="desc">
-			<div class="div-desc">
-				<p class="root-desc">
-					{{rootOrganization.name}}
-					{{rootOrganization.year}}
-					{{rootOrganization.country?.toUpperCase()}}
-				</p>
-				<p class="parent-desc hover-fade"
-					@click="router.push(getParentURL())">
-					{{parentOrganization?.type + " " + parentOrganization?.size}}
-				</p>
-				<p class="current-desc">
-					{{currentOrganization?.type + " " + currentOrganization?.size}}
-				</p>
-			</div>
+		<div>
+			<div class="description">
+				<div class="division-description">
+					<p class="root-desc">
+						{{rootOrganization.name}}
+						{{rootOrganization.year}}
+						{{rootOrganization.country?.toUpperCase()}}
+					</p>
+					<p class="parent-desc hover-fade"
+						@click="router.push(parents[parents.length - 2]?.bsergURL || router.currentRoute.value.path)">
+						{{parentOrganization?.type + " " + parentOrganization?.size}}
+					</p>
+					<p class="current-desc">
+						{{currentOrganization?.type + " " + currentOrganization?.size}}
+					</p>
+				</div>
 
-			<OrgIcon
-				v-if="currentOrganization"
-				:size-string="getSizeString(currentOrganization.size)"
-				:type-tags="getTypeTags(currentOrganization.type)"
-			/>
+				<OrgIcon
+					v-if="currentOrganization"
+					:size-string="getSizeString(currentOrganization.size)"
+					:type-tags="getTypeTags(currentOrganization.type)"
+				/>
+			</div>
+			<div class="overview">
+				<ul>
+					<li v-for="(summary, i) in parents"
+					    @click="$router.push(summary.bsergURL)"
+					    :class="{current: i === parents.length - 1}">
+						<div>{{getSizeString(summary.size)}}</div>
+					</li>
+				</ul>
+			</div>
 		</div>
 		<RouterView v-if="currentOrganization" :organization="currentOrganization"/>
 	</div>
@@ -38,6 +49,7 @@ import OrgIcon from "@/mil/components/OrgIcon.vue";
 const rootOrganization: Ref = ref(undefined)
 const parentOrganization: Ref = ref(undefined)
 const currentOrganization: Ref = ref(undefined)
+const parents = ref([] as any[])
 const loading: Ref<boolean> = ref(false)
 
 
@@ -52,60 +64,93 @@ watchEffect(() => {
 			currentOrganization.value = r
 
 			loading.value = false
+			// TODO: THIS HERE IS GETTING CALLED TWICE FOR SOME REASEON
 			setOrganizationFromURL()
 		})
-	} else
-		setOrganizationFromURL()
+	}
+	else setOrganizationFromURL()
 })
 
 
 function setOrganizationFromURL() {
-	const childRoute = router.currentRoute.value.params.child_route
-	let re = rootOrganization.value
+	const childRoute : string[] = (router.currentRoute.value.params.child_route || []) as string[]
+
+	// Set organization of parent, current and root
+	let current = rootOrganization.value
 	let parent = rootOrganization.value
+	let pInfo = [current]
 	for (let i = 0; i < childRoute.length; i++) {
-		parent = re
-		re = re.children[childRoute[i]]
-		if (!re.children) {
-			parentOrganization.value = parent
-			currentOrganization.value = undefined
-			return
-		}
+		parent = current
+		current = current.children[parseInt(childRoute[i])]
+		pInfo.push(current)
+		// Only add until out of children
+		if (!current.children) break
 	}
+
+	// Load URLS
+	pInfo[pInfo.length - 1].bsergURL = router.currentRoute.value.path
+	for (let i = pInfo.length - 2; i >= 0; i--) {
+		const path = pInfo[i + 1].bsergURL
+		const split = path.split("/")
+		split.pop()
+		pInfo[i].bsergURL = split.join("/")
+	}
+
+	// Set refs
 	parentOrganization.value = parent
-	currentOrganization.value = re
+	currentOrganization.value = current
+	parents.value = pInfo
 }
-
-function getParentURL () {
-	const path = router.currentRoute.value.path
-	if (parentOrganization.value === currentOrganization.value)
-		return path
-
-	const url_split = path.split("/")
-	url_split.pop()
-	return url_split.join("/")
-}
-
 
 
 </script>
 
 <style scoped>
-.desc {
+.description {
 	display: grid;
 	place-items: center;
 }
 
-.desc > svg {
+.description > svg {
 	width: 200px;
 }
 
-.desc > p {
+.description > p {
 	font-size: 1.5em;
 	text-align: center;
 }
 
-.div-desc {
+.overview {
+	position: absolute;
+	top: 10%;
+	right: 0;
+}
+.overview ul {
+	font-size: 1em;
+	list-style: none;
+	padding: 0.2em 1em;
+	text-align: center;
+	width: 7em;
+}
+.overview ul li {
+	padding: 0 1em;
+	border: 1px solid transparent;
+	border-bottom-color: black;
+
+	box-sizing: content-box;
+	transition: border .3s linear;
+}
+.overview ul li:hover {
+	border-color: black;
+	cursor: pointer;
+}
+
+.overview .current>* {
+	font-weight: bold;
+}
+
+
+.division-description {
 	display: flex;
 	flex-direction: column;
 	margin-top: 1em;
