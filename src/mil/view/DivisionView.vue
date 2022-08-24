@@ -1,10 +1,12 @@
 <template>
 	<div v-if="rootOrganization">
-		<p class="root-desc hover-fade" @click="$router.push(parents[0].bsergURL)">
-			{{rootOrganization.name}}
-			{{rootOrganization.year}}
-			{{rootOrganization.country?.toUpperCase()}}
-		</p>
+		<div class="root-desc hover-fade" @click="$router.push(parents[0].bsergURL)">
+			<p >
+				{{rootOrganization.name}}
+				{{rootOrganization.year}}
+				{{rootOrganization.country?.toUpperCase()}}
+			</p>
+		</div>
 		<div>
 			<div class="detailed-input">
 				<label for="detailed-input"> DETAILED </label>
@@ -172,10 +174,14 @@ function setOrganizationFromURL() {
 }
 
 .root-desc {
-	font-size: 2em;
-	font-weight: bold;
 	text-align: center;
-	border-bottom: 2px solid green;
+	font-size: 1.5em;
+	font-style: italic;
+}
+.root-desc p {
+	padding: 0 .4em;
+	display: inline;
+	border: 3px solid darkgreen;
 }
 .parent-desc {
 	margin: 0 auto -.5em auto;
