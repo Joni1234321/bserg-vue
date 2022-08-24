@@ -1,6 +1,10 @@
 <template>
 	<div v-if="rootOrganization">
 		<div>
+			<div class="detailed-input">
+				<label for="detailed-input"> DETAILED </label>
+				<input v-model="detailed" name="detailed-input" type="checkbox">
+			</div>
 			<div class="description">
 				<div class="division-description">
 					<p class="root-desc">
@@ -24,16 +28,18 @@
 				/>
 			</div>
 			<div class="overview">
-				<ul>
-					<li v-for="(summary, i) in parents"
+				<table>
+					<tr v-for="(summary, i) in parents"
 					    @click="$router.push(summary.bsergURL)"
 					    :class="{current: i === parents.length - 1}">
-						<div>{{getSizeString(summary.size)}}</div>
-					</li>
-				</ul>
+						<td>{{getSizeString(summary.size)}}</td>
+						<td v-if="detailed"><OrgIcon :type-tags="getTypeTags(summary.type)"/></td>
+						<td v-if="detailed" style="padding: 0 .5em;text-align: left">{{summary.n ?? 1}} ( {{summary.total}} )</td>
+					</tr>
+				</table>
 			</div>
 		</div>
-		<RouterView v-if="currentOrganization" :organization="currentOrganization"/>
+		<RouterView v-if="currentOrganization" :organization="currentOrganization" :detailed="detailed"/>
 	</div>
 </template>
 
@@ -45,6 +51,7 @@ import backend from "@/backend";
 import router from "@/index";
 import OrgIcon from "@/mil/components/OrgIcon.vue";
 
+const detailed = ref(false)
 
 const rootOrganization: Ref = ref(undefined)
 const parentOrganization: Ref = ref(undefined)
@@ -96,6 +103,11 @@ function setOrganizationFromURL() {
 		pInfo[i].bsergURL = split.join("/")
 	}
 
+	// Load total
+	for (let i = 0; i < pInfo.length; i++)
+		pInfo[i].total = (pInfo[i - 1]?.total ?? 1) * (pInfo[i]?.n ?? 1)
+
+
 	// Set refs
 	parentOrganization.value = parent
 	currentOrganization.value = current
@@ -122,27 +134,29 @@ function setOrganizationFromURL() {
 
 .overview {
 	position: absolute;
-	top: 10%;
+	top: 1em;
 	right: 0;
 }
-.overview ul {
-	font-size: 1em;
-	list-style: none;
-	padding: 0.2em 1em;
+.overview table {
 	text-align: center;
-	width: 7em;
+	border-collapse: collapse;
 }
-.overview ul li {
-	padding: 0 1em;
+.overview tr {
+	font-size: 1.5em;
 	border: 1px solid transparent;
 	border-bottom-color: black;
-
-	box-sizing: content-box;
 	transition: border .3s linear;
 }
-.overview ul li:hover {
+.overview td:nth-child(1) {
+	width: 3em;
+}
+.overview td svg {
+	height: 1.5em;
+}
+.overview tr:hover {
 	border-color: black;
 	cursor: pointer;
+	opacity: .7;
 }
 
 .overview .current>* {
