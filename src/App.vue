@@ -3,7 +3,7 @@
 		<router-link :to="{name: 'home'}">Main</router-link>
 		<router-link :to="{name: 'projects'}">Projects</router-link>
 		<router-link :to="{name: 'products'}">Products</router-link>
-		<router-link :to="{name: 'mil'}">Mil</router-link>
+		<router-link :to="{name: 'mil'}">DEMO</router-link>
 	</nav>
 	<div id="page">
 		<RouterView/>
