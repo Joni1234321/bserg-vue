@@ -4,6 +4,9 @@
 		<category title="Demo"
 		          url-name="mil">
 			<p>Organization WWII</p>
+			<p>Extracted data from niehorster.org</p>
+			<p>Most interesting is USSR 1944 rifle division</p>
+			<p>NATO symbols are in svg format, created in hand by me</p>
 		</category>
 		<category title="Projects"
 		          url-name="projects">
