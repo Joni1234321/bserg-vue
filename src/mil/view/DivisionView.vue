@@ -1,7 +1,7 @@
 <template>
 	<div v-if="rootOrganization">
-		<div class="root-desc hover-fade" @click="$router.push(parents[0].bsergURL)">
-			<p >
+		<div class="root-desc" >
+			<p class="hover-fade" @click="$router.push(parents[0].bsergURL)">
 				{{rootOrganization.name}}
 				{{rootOrganization.year}}
 				{{rootOrganization.country?.toUpperCase()}}
