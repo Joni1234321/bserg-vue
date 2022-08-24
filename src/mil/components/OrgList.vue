@@ -58,11 +58,7 @@ const canClick = (organization: any): boolean => organization.children !== undef
 	transform: rotateX(180deg);
 }
 
-.organization-child {
-	height: 100px;
-}
-
 .organization-sub-child {
-	height: 70px;
+	height: 3.5em;
 }
 </style>

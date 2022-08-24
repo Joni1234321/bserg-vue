@@ -87,7 +87,7 @@ function getTypes(tags: string[]): any {
 		if (tag === "infantry") out.isInfantry = true
 		else if (tag === "armor" || tag === "armored") out.isArmor = true
 		else if (tag === "car") out.isCar = true
-		else if (tag === "artillery") out.isArtillery = true
+		else if (tag === "artillery" || tag === "howitzer") out.isArtillery = true
 		else if (tag === "anti-tank") out.isAntiTank = true
 		else if (tag === "anti-air") out.isAntiAir = true
 		else if (tag === "reconnaissance") out.isReconnaissance = true

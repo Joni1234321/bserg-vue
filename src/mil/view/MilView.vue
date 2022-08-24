@@ -11,9 +11,9 @@
 
 <style scoped>
 h1 {
+	font-size: 1em;
 	font-weight: bold;
 	text-align: center;
-	border-bottom: 5px solid green;
 
 }
 </style>

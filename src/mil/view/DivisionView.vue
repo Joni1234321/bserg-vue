@@ -1,5 +1,10 @@
 <template>
 	<div v-if="rootOrganization">
+		<p class="root-desc hover-fade" @click="$router.push(parents[0].bsergURL)">
+			{{rootOrganization.name}}
+			{{rootOrganization.year}}
+			{{rootOrganization.country?.toUpperCase()}}
+		</p>
 		<div>
 			<div class="detailed-input">
 				<label for="detailed-input"> DETAILED </label>
@@ -7,13 +12,8 @@
 			</div>
 			<div class="description">
 				<div class="division-description">
-					<p class="root-desc">
-						{{rootOrganization.name}}
-						{{rootOrganization.year}}
-						{{rootOrganization.country?.toUpperCase()}}
-					</p>
 					<p class="parent-desc hover-fade"
-						@click="router.push(parents[parents.length - 2]?.bsergURL || router.currentRoute.value.path)">
+						@click="$router.push(parents[parents.length - 2]?.bsergURL || router.currentRoute.value.path)">
 						{{parentOrganization?.type + " " + parentOrganization?.size}}
 					</p>
 					<p class="current-desc">
@@ -171,19 +171,26 @@ function setOrganizationFromURL() {
 	text-align: center;
 }
 
+.root-desc {
+	font-size: 2em;
+	font-weight: bold;
+	text-align: center;
+	border-bottom: 2px solid green;
+}
 .parent-desc {
-	margin: 0 auto .6em auto;
-	font-size: 1em;
-	background-color: rgba(0,0,0,.2);
+	margin: 0 auto -.5em auto;
+	font-size: .8em;
+	border: 2px solid rgba(0,0,0,.2);
+	border-bottom-color: transparent;
+	border-top-color: transparent;
 	color: #444;
-	padding: .15em 1em;
-	box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
+	padding: .15em .6em;
 }
 
 .current-desc {
 	font-size: 1.5em;
 	vertical-align: bottom;
-	border-bottom: 3px solid black;
+	border-bottom: 2px solid black;
 	padding: 0 2em;
 }
 
