@@ -45,7 +45,7 @@ const router = createRouter(
             {
                 path: "/highlights",
                 name: "highlights",
-                component: () => import("@/view/AboutView.vue")
+                redirect: {name: "mil"},
             },
             {
                 path: "/projects/:project_id",

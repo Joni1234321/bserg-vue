@@ -1,11 +1,9 @@
 <template>
 	<AppTitle header="BSERG.COM" sub-header="by jonas vendelbo hansen"/>
 	<div class="categories">
-		<category title="Highlights"
-		          url-name="highlights">
-			<p>Active Projects</p>
-			<p>Recent Projects</p>
-			<p>Recent Products</p>
+		<category title="Demo"
+		          url-name="mil">
+			<p>Organization WWII</p>
 		</category>
 		<category title="Projects"
 		          url-name="projects">
@@ -14,11 +12,6 @@
 				<p>Finished</p>
 				<p>Archived</p>
 			</div>
-		</category>
-		<category title="Products"
-		          url-name="products">
-			<p>Finished</p>
-			<p>To Do</p>
 		</category>
 	</div>
 </template>
