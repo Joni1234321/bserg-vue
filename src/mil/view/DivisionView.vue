@@ -8,9 +8,33 @@
 			</p>
 		</div>
 		<div>
-			<div class="detailed-input">
+			<div>
 				<label for="detailed-input"> DETAILED </label>
 				<input v-model="detailed" name="detailed-input" type="checkbox">
+			</div>
+			<div>
+				<label for="equipment-input"> EQUIPMENT </label>
+				<input v-model="equipmentInput" name="equipment-input" type="checkbox">
+			</div>
+			<div v-if="equipmentInput">
+				<table>
+					<tr>
+						<th>name</th>
+						<th>n</th>
+					</tr>
+					<tr v-for="([name, n], i) in ([['men',sumCurrent.men]]).concat(sumCurrent.equipment)">
+						<td v-if="i < 8">{{name}}</td>
+						<td v-if="i < 8"  style="direction: rtl">{{n}}</td>
+					</tr>
+					<tr v-if="detailed">
+						<th>Unknowns</th>
+						<th>n</th>
+					</tr>
+					<tr v-if="detailed" v-for="[size, n] in sumCurrent.unknownCountBySize">
+						<td>{{getSizeString(size)}}</td>
+						<td style="direction: rtl">{{n}}</td>
+					</tr>
+				</table>
 			</div>
 			<div class="description">
 				<div class="division-description">
@@ -46,7 +70,7 @@
 </template>
 
 <script lang="ts" setup>
-import {getSizeString, getTypeTags} from "@/mil/shared";
+import {compareSizeFunc, getSizeString, getTypeTags} from "@/mil/shared";
 import type {Ref} from "vue"
 import {computed, ref, watchEffect} from "vue";
 import backend from "@/backend";
@@ -54,6 +78,7 @@ import router from "@/index";
 import OrgIcon from "@/mil/components/OrgIcon.vue";
 
 const detailed = ref(false)
+const equipmentInput = ref(false)
 
 const rootOrganization: Ref = ref(undefined)
 const parentOrganization: Ref = ref(undefined)
@@ -116,6 +141,42 @@ function setOrganizationFromURL() {
 	parents.value = pInfo
 }
 
+const sumCurrent = computed(() => {
+	let totalMen = 0
+	const unknownMen = []
+	const equipment : {[name: string]: number} = {}
+
+	// bfs add all
+	let queue : [any, number][] = [[currentOrganization.value, 1]]
+	while (queue.length != 0) {
+		const [child, n] = queue.pop() as [any, number]
+		if (child.children)
+			queue = queue.concat(child.children?.map((c: any) => [c, n * (c.n || 1)]) ?? [])
+		else
+			unknownMen.push(child)
+
+		totalMen += (parseInt(child.men) || 0) * n
+
+		child.equipment?.forEach((eq : any) => {equipment[eq.name] ||= 0; equipment[eq.name] += eq.n * n})
+	}
+
+	// Sort equipment and convet them into list
+	const equipmentList : [string, number][] = []
+	for (const key in equipment)
+		equipmentList.push( [ key, equipment[key] ] );
+	equipmentList.sort(([,a],[,b]) => b-a)
+
+	// Sort the unknown and convert them into list
+	const unknownMenBySize : {[name: string]: number} = {}
+	unknownMen.forEach((org: any) => { unknownMenBySize[org.size] ||= 0; unknownMenBySize[org.size] += parseInt(org.n) || 1})
+	const unknownMenBySizeList : [string, number][] = []
+	for (const key in unknownMenBySize)
+		unknownMenBySizeList.push( [ key, unknownMenBySize[key] ] );
+	unknownMenBySizeList.sort(([a,],[b,]) => compareSizeFunc(a, b))
+
+
+	return {men: totalMen === 0 ? "Ø" : totalMen, unknownCountBySize: unknownMenBySizeList, equipment: equipmentList}
+})
 
 </script>
 

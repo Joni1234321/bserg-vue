@@ -10,7 +10,8 @@
 				/>
 			</div>
 
-			<div v-for="subChild in getChildren(child)" v-if="child.children && detailed"
+			<div v-if="child.children && detailed"
+			     v-for="subChild in getChildren(child)"
 			     class="organization-sub-child">
 				<OrgIcon
 					:link="canClick(subChild)"
@@ -18,6 +19,9 @@
 					:type-tags="getTypeTags(subChild.type)"
 					@click="canClick(subChild) ? $router.push($router.currentRoute.value.path  + '/' + child.i + '/' + subChild.i) : ''"
 				/>
+			</div>
+			<div v-else-if="true & detailed" class="equipment">
+				<p style="text-align: center; font-size: .6em">[ {{child.men}} ]</p>
 			</div>
 		</div>
 
@@ -60,5 +64,13 @@ const canClick = (organization: any): boolean => organization.children !== undef
 
 .organization-sub-child {
 	height: 3.5em;
+}
+
+.equipment table {
+	font-size: .5em;
+	background-color: #ccc;
+}
+.equipment tr {
+	border-bottom: 10px solid black;
 }
 </style>
