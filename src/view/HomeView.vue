@@ -7,6 +7,7 @@
 			<p>Extracted data from niehorster.org</p>
 			<p>Most interesting is USSR 1944 rifle division</p>
 			<p>NATO symbols are in svg format, created in hand by me</p>
+			<p>ideal for fullscreen 1920x1080 resolution</p>
 		</category>
 		<category title="Projects"
 		          url-name="projects">
