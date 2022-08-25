@@ -20,7 +20,7 @@
 					@click="canClick(subChild) ? $router.push($router.currentRoute.value.path  + '/' + child.i + '/' + subChild.i) : ''"
 				/>
 			</div>
-			<div v-else-if="true & detailed" class="equipment">
+			<div v-else-if="detailed" class="equipment">
 				<p style="text-align: center; font-size: .6em">[ {{child.men}} ]</p>
 			</div>
 		</div>
