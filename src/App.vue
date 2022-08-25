@@ -1,4 +1,5 @@
 <template>
+	<link rel="preconnect" :href="backend.url">
 	<nav>
 		<router-link :to="{name: 'home'}">bserg</router-link>
 		<router-link :to="{name: 'projects'}">projects</router-link>
@@ -12,7 +13,10 @@
 
 <script lang="ts" setup>
 
-import {RouterView} from 'vue-router'</script>
+import {RouterView} from 'vue-router'
+import backend from "@/backend";
+
+</script>
 
 <style>
 @import './assets/base.css';
