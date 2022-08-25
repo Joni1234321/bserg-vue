@@ -178,7 +178,6 @@ const sumCurrent = computed(() => {
 	for (const key in unknownMenBySize)
 		unknownMenBySizeList.push( [ key, unknownMenBySize[key] ] );
 	unknownMenBySizeList.sort(([a,],[b,]) => compareSizeFunc(a, b))
-	console.log(unknownMen.map(u => u.men))
 
 
 	return {men: totalMen === 0 ? "Ø" : totalMen, unknownCountBySize: unknownMenBySizeList, equipment: equipmentList}
