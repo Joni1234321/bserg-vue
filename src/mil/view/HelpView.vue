@@ -74,4 +74,8 @@ div {
 	font-style: italic;
 }
 
+a {
+	color: var(--c-red)
+}
+
 </style>

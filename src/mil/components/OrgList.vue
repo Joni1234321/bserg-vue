@@ -1,13 +1,14 @@
 <template>
 	<div class="organization-list">
 		<div v-for="child in getChildren(organization)">
-			<div class="organization-child">
+			<div class="organization-child tooltip">
 				<OrgIcon
 					:link="canClick(child)"
 					:size-string="getSizeString(child.size)"
 					:type-tags="getTypeTags(child.type)"
 					@click="canClick(child) ? $router.push($router.currentRoute.value.path + '/' + child.i) : ''"
 				/>
+				<p class="tooltiptext"> {{child.type + " " + child.size}} </p>
 			</div>
 
 			<div v-if="child.children && detailed"
@@ -46,6 +47,9 @@ const canClick = (organization: any): boolean => organization.children !== undef
 
 <style scoped>
 
+.organization-list>* {
+	min-height: 300px;
+}
 .organization-list {
 	display: grid;
 	grid-gap: 16px;
@@ -55,7 +59,6 @@ const canClick = (organization: any): boolean => organization.children !== undef
 	grid-auto-columns: 100px;
 	overflow-x: auto;
 	justify-content: safe center;
-
 }
 
 .organization-list, .organization-list > * {
@@ -72,5 +75,29 @@ const canClick = (organization: any): boolean => organization.children !== undef
 }
 .equipment tr {
 	border-bottom: 10px solid black;
+}
+.tooltip .tooltiptext{
+	pointer-events: none;
+
+	font-size: .8em;
+	text-align: center;
+	border: 1px solid black;
+	opacity: 0;
+	border-radius: 5px;
+	background-color: white;
+
+	padding: .1em .25em;
+
+	/* Position the tooltip */
+	position: absolute;
+	width: 100%;
+	margin-top: -1em;
+	left: 50%;
+	transform: translate(-50%, 0);
+	z-index: 1;
+	transition: all .2s linear;
+}
+.tooltip:hover .tooltiptext {
+	opacity: 1;
 }
 </style>

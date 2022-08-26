@@ -251,7 +251,9 @@ const sumCurrent = computed(() => {
 .root-desc p {
 	padding: 0 .4em;
 	display: inline;
-	border: 3px solid darkgreen;
+	border: 3px solid var(--c-red);
+	border-top-color: transparent;
+	border-radius: 5px;
 }
 .parent-desc {
 	margin: 0 auto -.5em auto;
@@ -269,6 +271,4 @@ const sumCurrent = computed(() => {
 	border-bottom: 2px solid black;
 	padding: 0 2em;
 }
-
-
 </style>

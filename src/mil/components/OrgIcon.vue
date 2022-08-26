@@ -143,7 +143,10 @@ function getTypes(tags: string[]): any {
 			//return {isHeadquarters: true}
 			//out.isHeadquarters = true
 		// WEAPONS
-		else if (tag === "machine gun") out.bottomText = "MG"
+		else if (tag === "machine gun") {
+			out.bottomText = "MG"
+			if (tags.length === 1) return {isInfantry: true, bottomText: "MG"}
+		}
 		else if (tag === "sub-machine gun") {
 			out.isInfantry = true;
 			out.topText = "SMG"

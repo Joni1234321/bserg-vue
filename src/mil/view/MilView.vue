@@ -1,10 +1,10 @@
 <template>
 	<div class="main">
 		<div class="top-bar">
-		<router-link :to="{name:'mil'}"><h1>demo</h1></router-link>
-		<div class="links">
-			<router-link :to="{name: 'mil.help'}">demo info</router-link>
-		</div>
+			<router-link class="home-link" :to="{name:'mil'}">demo</router-link>
+			<div class="links">
+				<router-link :to="{name: 'mil.help'}">demo info</router-link>
+			</div>
 		</div>
 		<RouterView/>
 	</div>
@@ -19,7 +19,12 @@
 	font-size: .8em;
 	margin-bottom: 1em;
 }
-h1 {
+.top-bar *{
+	color: black;
+}
+.home-link {
+	display: block;
+	font-size: 2em;
 	font-weight: bold;
 	text-align: center;
 }

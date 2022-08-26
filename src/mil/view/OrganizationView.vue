@@ -1,6 +1,6 @@
 <template>
-	<div v-if="organization" class="organization-view" style="">
-		<OrgList :detailed="detailed" :organization="organization" class="organization-list"/>
+	<div v-if="organization" class="organization-view">
+		<OrgList :detailed="detailed" :organization="organization"/>
 	</div>
 </template>
 
@@ -17,15 +17,8 @@ defineProps<{
 
 <style scoped>
 
-input {
-	width: 1em;
-	height: 1em;
+.organization-view {
+	min-height: 100vh;
 }
-
-label {
-	writing-mode: vertical-rl;
-	text-align: center;
-}
-
 
 </style>
