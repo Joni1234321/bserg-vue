@@ -22,14 +22,19 @@
 			<path v-if="types.isAntiTank" d="M 0 0 L 75 100 L 150 0"/>
 			<path v-if="types.isAntiAir" d="M 0 100 L 75 0 L 150 100 M 37.5 50 l 75 0"/>
 			<path v-if="types.isReconnaissance" d="M 0 100 L 150 0"/>
+			<polygon v-if="types.isCavalry" points="0,100 150,100 150,0" fill="black"/>
 			<g v-if="types.isMortar">
 				<circle cx="75" cy="65" fill="black" r="7"/>
 				<path d="M 75 65 l 0 -40 l 10 10 m -10 -10 l -10 10"/>
 			</g>
 
 			<!-- SUPPORT -->
+			<polygon v-if="types.isObserver" points="75,20 105,70 45,70"/>
 			<path v-if="types.isSignal" d="M 0 0 l 75 70 L 75 30 L 150 100"/>
-			<path v-if="types.isEngineer" d="M 30 70 l 0 -45 l 90 0 l 0 45 M 75 25 l 0 35"/>
+			<g v-if="types.isEngineer">
+				<rect x="30" y="30" width="90" height="40" style="fill: white; stroke: white"/>
+				<path v-if="types.isEngineer" d="M 35 70 l 0 -35 l 80 0 l 0 35 m -40 -35 l 0 25"/>
+			</g>
 			<path v-if="types.isMedical"
 			      d="M 0 50 L 150 50 M 75 0 L 75 100 M 30 40 l 0 20 M 120 40 l 0 20 M 65 20 l 20 0 M 65 80 l 20 0"/>
 			<g v-if="types.isTransport">
@@ -58,7 +63,7 @@
 			<text style="font-size:15px" x="75" y="25"> {{ types.topText }}</text>
 			<text style="font-size:10px; text-anchor: end;" x="145" y="25"> {{ types.cornerText }}</text>
 
-			<text style="fill:red;" x="75" y="95"> {{ types.notes }}</text>
+			<text :style="{fill:types.isCavalry ? 'white' : 'red'}" x="75" y="95"> {{ types.notes }}</text>
 		</g>
 	</svg>
 </template>
@@ -78,6 +83,7 @@ interface TagsType {
 	[key: string]: boolean | string,
 }
 
+const topTextTags = ["wire", "radio"]
 
 function getTypes(tags: string[]): any {
 	const out: TagsType = {notes: ""}
@@ -91,6 +97,7 @@ function getTypes(tags: string[]): any {
 		else if (tag === "anti-tank") out.isAntiTank = true
 		else if (tag === "anti-air") out.isAntiAir = true
 		else if (tag === "reconnaissance") out.isReconnaissance = true
+		else if (tag === "cavalry") out.isCavalry = true
 		else if (tag === "self-propelled gun") {
 			out.isArmor = true;
 			out.isArtillery = true
@@ -102,10 +109,12 @@ function getTypes(tags: string[]): any {
 		}
 
 		// SUPPORT
+		else if (tag === "observer") out.isObserver = true
+
 		else if (tag === "signal") out.isSignal = true
 		else if (tag === "telephone") out.bottomText = tag
 
-		else if (tag === "engineer") out.isEngineer = true
+		else if (tag === "engineer" || tag === "pioneer") out.isEngineer = true
 
 		else if (tag === "medical") out.isMedical = true
 		else if (tag === "hospital") return {isMedical: true, cornerText: tags.join(" ")}
@@ -123,8 +132,12 @@ function getTypes(tags: string[]): any {
 		else if (tag === "maintenance") out.isMaintenance = true
 		else if (tag === "fuel") out.isFuel = true
 
-		else if (tag === "headquarters") return {notes: tags, isHeadquarters: true}
+		else if (tag === "headquarters"){
+			const importantWords : string[] = tags.slice(0, tags.indexOf("headquarters"))
 
+			return {isHeadquarters: true, notes: importantWords.join(" ")}}
+			//return {isHeadquarters: true}
+			//out.isHeadquarters = true
 		// WEAPONS
 		else if (tag === "machine gun") out.bottomText = "MG"
 		else if (tag === "sub-machine gun") {
@@ -139,6 +152,9 @@ function getTypes(tags: string[]): any {
 		else if (tag === "semi-motorized") out.isSemiMotorized = true
 		else if (tag === "medium") out.isMedium = true
 		else if (tag === "heavy") out.isHeavy = true
+
+		// TEXT MESSAGES THAT DOESNT BELONG IN NOTES
+		else if (topTextTags.includes(tag)) out.topText = tag
 
 		// ELSE
 		else out.notes += tag + " "

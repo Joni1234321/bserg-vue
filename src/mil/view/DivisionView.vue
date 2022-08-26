@@ -170,7 +170,8 @@ const sumCurrent = computed(() => {
 	for (const key in equipment)
 		equipmentList.push( [ key, equipment[key] ] );
 	equipmentList.sort(([,a],[,b]) => b-a)
-
+	console.log(currentOrganization.value);
+	console.log(equipmentList);
 	// Sort the unknown and convert them into list
 	const unknownMenBySize : {[name: string]: number} = {}
 	unknownMen.forEach((org: any) => { unknownMenBySize[org.size] ||= 0; unknownMenBySize[org.size] += parseInt(org.n) || 1})
