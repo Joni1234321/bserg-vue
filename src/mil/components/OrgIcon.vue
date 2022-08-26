@@ -41,6 +41,11 @@
 				<circle cx="75" cy="50" r="25"/>
 				<path d="M 50 50 l 50 0 M 75 25 l 0 50 M 57.5 32.5 l 35 35 M 57.5 67.5 l 35 -35"/>
 			</g>
+			<g v-if="types.isChemical">
+				<path d="M 65 75 A 55 50 0 0 1 105 30 M 45 30 A 55 50 0 0 1 85 75"/>
+				<circle r="5" cx="105" cy="30" fill="black"/>
+				<circle r="5" cx="45" cy="30" fill="black"/>
+			</g>
 			<rect v-if="types.isSupply || types.isService" fill="black" height="15" width="150" x="0" y="85"/>
 
 			<path v-if="types.isAmmunition" d="M 50 75 l 50 0 m -10 -35 a 15 15 0 1 0 -30 0 l 0 35 m 30 0 l 0 -35"/>
@@ -124,6 +129,7 @@ function getTypes(tags: string[]): any {
 		} else if (tag === "transport") out.isTransport = true
 		else if (tag === "baker") out.centerText = "Baker"
 		else if (tag === "veterinary") out.centerText = "V"
+		else if (tag === "chemical") out.isChemical = true
 		else if (tag === "supply") out.isSupply = true
 		else if (tag === "service") {
 			out.isService = true;
@@ -132,10 +138,8 @@ function getTypes(tags: string[]): any {
 		else if (tag === "maintenance") out.isMaintenance = true
 		else if (tag === "fuel") out.isFuel = true
 
-		else if (tag === "headquarters"){
-			const importantWords : string[] = tags.slice(0, tags.indexOf("headquarters"))
-
-			return {isHeadquarters: true, notes: importantWords.join(" ")}}
+		else if (tag === "headquarters")
+			return {isHeadquarters: true, notes: tags.slice(0, tags.indexOf("headquarters")).join(" ")}
 			//return {isHeadquarters: true}
 			//out.isHeadquarters = true
 		// WEAPONS
