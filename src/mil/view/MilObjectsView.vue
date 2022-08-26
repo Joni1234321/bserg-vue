@@ -68,11 +68,11 @@ function showCountry (country: string) {
 function getCountryColor (country: string) {
 	switch(country) {
 		case "ussr":
-			return "rgba(192,30,30,0.90)"
+			return "rgba(192,30,30,0.7)"
 		case "usa":
-			return "rgba(30,100,190,0.9)"
+			return "rgba(30,100,190,0.7)"
 		case "germany":
-			return "rgba(215,215,215,0.9)"
+			return "rgba(215,215,215,0.7)"
 		default:
 			return "green"
 	}
@@ -105,19 +105,19 @@ function sortBy (sortCategory: string, getProperty: (_: any) => any) {
 	border-bottom: 2px solid black;
 }
 .filter>* {
-	font-size: 1.5em;
+	font-size: 1.2em;
 	display: inline;
 }
 .filter>div {
 	padding: 0 1em;
-	border-radius: 10px;
+	border-radius: .2em;
 	margin: 0 .5em;
 }
 
 table {
 	margin-top: 10px;
 	width: 100%;
-	font-size: 2em;
+	font-size: 1.5em;
 	text-align: center;
 	border-collapse: collapse;
 }

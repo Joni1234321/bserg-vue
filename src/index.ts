@@ -83,7 +83,11 @@ const router = createRouter(
                             }
                         ],
                     },
-
+                    {
+                        path: "help",
+                        name: "mil.help",
+                        component: () => import("@/mil/view/HelpView.vue"),
+                    },
 
                 ]
             },
