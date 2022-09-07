@@ -1,7 +1,7 @@
 <template>
-	<div class="org-view">
+	<div class="org-view" @keyup.left="nextTab(-1)" @keyup.right="nextTab(1)">
 		<div ref="tabs" class="view-selector">
-			<a v-for="(name, i) in ['table', 'equipment', 'companies']" @click="onTabClick(i)">{{name}}</a>
+			<a v-for="(name, i) in tabList" @click="onTabClick(i)">{{name}}</a>
 		</div>
 		<div v-if="activeChild === 0" class="organization-view">
 			<OrgList :detailed="detailed" :organization="organization"/>
@@ -51,7 +51,11 @@ const props = defineProps<{
 
 const activeChild = ref(0)
 const tabs: Ref<null | HTMLHtmlElement> = ref(null)
+const tabList = ['table', 'equipment', 'companies']
 onMounted(() => onTabClick(0))
+
+function test () {console.log("hej med dig")}
+const nextTab = (direction?: number) => onTabClick((activeChild.value + (direction ?? 1)) % tabList.length)
 
 function onTabClick (child : number) {
 	tabs.value?.children[activeChild.value].classList.remove("active")

@@ -9,7 +9,7 @@
 		</div>
 		<div>
 			<div class="modify">
-				<div>
+				<div @click="detailed = !detailed">
 					<input v-model="detailed" name="detailed-input" type="checkbox">
 					<label for="detailed-input"> detailed </label>
 				</div>
