@@ -56,13 +56,14 @@ const canClick = (organization: any): boolean => organization.children !== undef
 	grid-auto-columns: 100px;
 	overflow-x: auto;
 	justify-content: safe center;
+	min-height: 20em;
 }
 
 .organization-list, .organization-list > * {
 	transform: rotateX(180deg);
 }
 
-.organization-child {
+.organization-child>svg{
 	height: 7em;
 }
 .organization-sub-child {
