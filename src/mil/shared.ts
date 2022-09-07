@@ -1,3 +1,8 @@
+export function nameToTags(name: string) {
+    const types = name.split(" ")
+    const size = types.pop()
+    return {tags: getTypeTags(types.join(" ")), sizeString: getSizeString(size)}
+}
 export function getTypeTags(typeString?: string) {
     if (typeString === undefined) return []
     const ar = typeString.split(" ")

@@ -27,6 +27,13 @@
 				</tr>
 			</table>
 		</div>
+		<div v-if="activeChild === 2" class="company-view">
+			<div v-for="[name, n] in totalCompanies">
+				<p class="number">{{n}}</p>
+				<OrgIcon :type-tags="nameToTags(name).tags" :size-string="nameToTags(name).sizeString"/>
+				<p>{{name}}</p>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -34,7 +41,8 @@
 import OrgList from "@/mil/components/OrgList.vue";
 import {computed, onMounted, ref} from "vue";
 import type {Ref} from "vue";
-import {compareSizeFunc} from "@/mil/shared";
+import {compareSizeFunc, getSizeString, nameToTags} from "@/mil/shared";
+import OrgIcon from "@/mil/components/OrgIcon.vue";
 
 const props = defineProps<{
 	organization: any | undefined,
@@ -59,6 +67,9 @@ const sumCurrent = computed(() => {
 
 	// bfs add all
 	let queue : [any, number][] = [[props.organization, 1]]
+	if (props.organization.children)
+		queue = props.organization.children.map((child: any) => [child, child.n || 1])
+
 	while (queue.length != 0) {
 		const [child, n] = queue.pop() as [any, number]
 		// Not leafs
@@ -93,7 +104,47 @@ const sumCurrent = computed(() => {
 	return {men: totalMen === 0 ? "Ø" : totalMen, unknownCountBySize: unknownMenBySizeList, equipment: equipmentList}
 })
 
+const totalCompanies = computed(() => {
+	const companies : {[name: string]: [string, number]} = {}
 
+	// bfs add all
+
+	let queue : [any, number][] = [[props.organization, 1]]
+
+	while (queue.length != 0) {
+		const [child, n] = queue.pop() as [any, number]
+
+		// Skip hq
+		if (child.type.split(" ").includes("headquarters")) {
+			queue = queue.concat(child.children?.map((c: any) => [c, n * (c.n || 1)]) ?? [])
+			continue
+		}
+
+		// Sort by size as well
+		const childIndex = child.type + " " + child.size
+
+		// Leafs or company
+		if ((!child.children && props.detailed) || getSizeString(child.size) === getSizeString("company")) {
+			companies[childIndex] ||= [child.size, 0]
+			companies[childIndex][1] += n;
+			continue
+		}
+
+		queue = queue.concat(child.children?.map((c: any) => [c, n * (c.n || 1)]) ?? [])
+	}
+
+	// Sort equipment and convet them into list
+	const compList : [string, [string, number]][] = []
+	for (const key in companies)
+		compList.push( [ key, companies[key] ] );
+	compList.sort(([aName,a],[bName,b]) => {
+		const isHQ = (title: string) => title.split(" ").includes("headquarters")
+
+		// Split into hq and not, and then biggest size first, then by n
+		return (+isHQ(aName) - +isHQ(bName)) || compareSizeFunc(a[0], b[0]) || b[1] - a[1]
+	})
+	return compList.map(([key, [,n]]) => [key, n])
+})
 
 </script>
 
@@ -101,6 +152,16 @@ const sumCurrent = computed(() => {
 
 .organization-view {
 	min-height: 100vh;
+}
+
+.company-view{
+	font-size: 1em;
+}
+.company-view>* {
+	display: grid;
+	grid-template-columns: 1.5em 4em auto;
+	height: 3em;
+	place-items: center;
 }
 
 .view-selector {
@@ -118,6 +179,10 @@ const sumCurrent = computed(() => {
 	padding: 0 1em;
 	border: 1px solid transparent;
 	border-bottom-color: grey;
+	transition: 0.1s;
+}
+.view-selector>*:hover {
+	background-color: #ddd;
 }
 
 .org-view {
