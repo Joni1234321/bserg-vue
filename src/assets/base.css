@@ -76,6 +76,11 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+@media only screen and (max-width: 768px){
+    body{
+        font-size: 8px;
+    }
+}
 .hover-fade:hover {
     opacity: .8;
     cursor: pointer;

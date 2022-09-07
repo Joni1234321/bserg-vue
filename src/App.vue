@@ -22,8 +22,8 @@ import backend from "@/backend";
 @import './assets/base.css';
 
 nav {
-	padding-left: 50px;
-	font-size: 26px;
+	padding-left: .5em;
+	font-size: 2em;
 	background-color: var(--c-red);
 }
 
@@ -41,6 +41,6 @@ a {
 
 a:hover {
 	background-color: hsl(0, 0%, 10%, 0.4);
-	border-radius: 3px;
+	border-radius: .2em;
 }
 </style>

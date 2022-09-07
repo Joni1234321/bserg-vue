@@ -39,7 +39,7 @@ const emits = defineEmits<{
 
 .app-title > .header {
 	font-weight: bold;
-	font-size: 6em;
+	font-size: 4em;
 }
 
 .app-title > .sub-header {
