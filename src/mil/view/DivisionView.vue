@@ -11,35 +11,11 @@
 			<div class="modify">
 				<div>
 					<input v-model="detailed" name="detailed-input" type="checkbox">
-					<label for="detailed-input"> DETAILED </label>
-				</div>
-				<div>
-					<input v-model="equipmentInput" name="equipment-input" type="checkbox">
-					<label for="equipment-input"> EQUIPMENT </label>
+					<label for="detailed-input"> detailed </label>
 				</div>
 			</div>
 
-			<div v-if="equipmentInput">
-				<table>
-					<tr>
-						<th>name</th>
-						<th>n</th>
-					</tr>
-					<tr v-for="([name, n], i) in ([['men',sumCurrent.men]]).concat(sumCurrent.equipment)">
-						<td v-if="i < 8">{{name}}</td>
-						<td v-if="i < 8"  style="direction: rtl">{{n}}</td>
-					</tr>
-					<br>
-					<tr v-if="detailed">
-						<th>Unknown</th>
-						<th>n</th>
-					</tr>
-					<tr v-if="detailed" v-for="[size, n] in sumCurrent.unknownCountBySize">
-						<td>{{(size)}}</td>
-						<td style="direction: rtl">{{n}}</td>
-					</tr>
-				</table>
-			</div>
+
 
 			<div class="description">
 				<div class="division-description">
@@ -84,7 +60,6 @@ import router from "@/index";
 import OrgIcon from "@/mil/components/OrgIcon.vue";
 
 const detailed = ref(false)
-const equipmentInput = ref(false)
 
 const rootOrganization: Ref = ref(undefined)
 const parentOrganization: Ref = ref(undefined)
@@ -146,48 +121,6 @@ function setOrganizationFromURL() {
 	currentOrganization.value = current
 	parents.value = pInfo
 }
-
-const sumCurrent = computed(() => {
-	let totalMen = 0
-	const unknownMen = []
-	const equipment : {[name: string]: number} = {}
-
-	// bfs add all
-	let queue : [any, number][] = [[currentOrganization.value, 1]]
-	while (queue.length != 0) {
-		const [child, n] = queue.pop() as [any, number]
-		// Not leafs
-		if (child.children)
-			queue = queue.concat(child.children?.map((c: any) => [c, n * (c.n || 1)]) ?? [])
-		// Leafs
-		else if (!(parseInt(child.men) > 0))
-			unknownMen.push(child)
-
-		// Add all men
-		totalMen += (parseInt(child.men) || 0) * n
-
-		// Add equipment
-		child.equipment?.forEach((eq : any) => {equipment[eq.name] ||= 0; equipment[eq.name] += eq.n * n})
-	}
-
-	// Sort equipment and convet them into list
-	const equipmentList : [string, number][] = []
-	for (const key in equipment)
-		equipmentList.push( [ key, equipment[key] ] );
-	equipmentList.sort(([,a],[,b]) => b-a)
-	console.log(currentOrganization.value);
-	console.log(equipmentList);
-	// Sort the unknown and convert them into list
-	const unknownMenBySize : {[name: string]: number} = {}
-	unknownMen.forEach((org: any) => { unknownMenBySize[org.size] ||= 0; unknownMenBySize[org.size] += parseInt(org.n) || 1})
-	const unknownMenBySizeList : [string, number][] = []
-	for (const key in unknownMenBySize)
-		unknownMenBySizeList.push( [ key, unknownMenBySize[key] ] );
-	unknownMenBySizeList.sort(([a,],[b,]) => compareSizeFunc(a, b))
-
-
-	return {men: totalMen === 0 ? "Ø" : totalMen, unknownCountBySize: unknownMenBySizeList, equipment: equipmentList}
-})
 
 </script>
 
@@ -292,7 +225,4 @@ const sumCurrent = computed(() => {
 	background-color: #ddd;
 	transition: background-color .4s;
 }
-.modify>div>input{
-}
-
 </style>

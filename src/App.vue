@@ -3,7 +3,6 @@
 	<nav>
 		<router-link :to="{name: 'home'}">bserg</router-link>
 		<router-link :to="{name: 'projects'}">projects</router-link>
-		<router-link v-if="false" :to="{name: 'products'}">Products</router-link>
 		<router-link :to="{name: 'mil'}">demo</router-link>
 	</nav>
 	<div id="page">
