@@ -8,14 +8,17 @@
 			</p>
 		</div>
 		<div>
-			<div>
-				<label for="detailed-input"> DETAILED </label>
-				<input v-model="detailed" name="detailed-input" type="checkbox">
+			<div class="modify">
+				<div>
+					<input v-model="detailed" name="detailed-input" type="checkbox">
+					<label for="detailed-input"> DETAILED </label>
+				</div>
+				<div>
+					<input v-model="equipmentInput" name="equipment-input" type="checkbox">
+					<label for="equipment-input"> EQUIPMENT </label>
+				</div>
 			</div>
-			<div>
-				<label for="equipment-input"> EQUIPMENT </label>
-				<input v-model="equipmentInput" name="equipment-input" type="checkbox">
-			</div>
+
 			<div v-if="equipmentInput">
 				<table>
 					<tr>
@@ -37,6 +40,7 @@
 					</tr>
 				</table>
 			</div>
+
 			<div class="description">
 				<div class="division-description">
 					<p class="parent-desc hover-fade"
@@ -54,6 +58,7 @@
 					:type-tags="getTypeTags(currentOrganization.type)"
 				/>
 			</div>
+
 			<div class="overview">
 				<table>
 					<tr v-for="(summary, i) in parents"
@@ -271,4 +276,23 @@ const sumCurrent = computed(() => {
 	border-bottom: 2px solid black;
 	padding: 0 2em;
 }
+
+.modify {
+	display: inline-grid;
+	grid-template-columns: 1fr;
+	background-color: black;
+	grid-gap:1px;
+	padding: 1px;
+}
+.modify>* {
+	background-color: white;
+	padding: .3em .5em .3em 1em;
+}
+.modify>*:hover {
+	background-color: #ddd;
+	transition: background-color .4s;
+}
+.modify>div>input{
+}
+
 </style>
