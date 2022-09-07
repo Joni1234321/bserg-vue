@@ -47,9 +47,6 @@ const canClick = (organization: any): boolean => organization.children !== undef
 
 <style scoped>
 
-.organization-list>* {
-	min-height: 300px;
-}
 .organization-list {
 	display: grid;
 	grid-gap: 16px;
@@ -65,6 +62,9 @@ const canClick = (organization: any): boolean => organization.children !== undef
 	transform: rotateX(180deg);
 }
 
+.organization-child {
+	height: 7em;
+}
 .organization-sub-child {
 	height: 3.5em;
 }

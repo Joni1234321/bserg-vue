@@ -163,10 +163,6 @@ const totalCompanies = computed(() => {
 
 <style scoped>
 
-.organization-view {
-	min-height: 100vh;
-}
-
 .company-view{
 	font-size: 1em;
 }
