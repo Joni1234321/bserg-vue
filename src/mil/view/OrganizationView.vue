@@ -7,25 +7,7 @@
 			<OrgList :detailed="detailed" :organization="organization"/>
 		</div>
 		<div v-if="activeChild === 1">
-			<table>
-				<tr>
-					<th>name</th>
-					<th>n</th>
-				</tr>
-				<tr v-for="([name, n], i) in ([['men',sumCurrent.men]]).concat(sumCurrent.equipment)">
-					<td v-if="i < 8">{{name}}</td>
-					<td v-if="i < 8"  style="direction: rtl">{{n}}</td>
-				</tr>
-				<br>
-				<tr v-if="detailed">
-					<th>Unknown</th>
-					<th>n</th>
-				</tr>
-				<tr v-if="detailed" v-for="[size, n] in sumCurrent.unknownCountBySize">
-					<td>{{(size)}}</td>
-					<td style="direction: rtl">{{n}}</td>
-				</tr>
-			</table>
+			<EquipmentList :organization="organization" :detailed="detailed"/>
 		</div>
 		<div v-if="activeChild === 2" class="company-view">
 			<div v-for="[name, n] in totalCompanies">
@@ -43,6 +25,7 @@ import {computed, onMounted, onUnmounted, ref} from "vue";
 import type {Ref} from "vue";
 import {compareSizeFunc, getSizeString, nameToTags} from "@/mil/shared";
 import OrgIcon from "@/mil/components/OrgIcon.vue";
+import EquipmentList from "@/mil/components/EquipmentList.vue";
 
 const props = defineProps<{
 	organization: any | undefined,
@@ -63,9 +46,7 @@ function keyHandle (event : any) {
 	if (event.keyCode === 39) nextTab(1)
 	else if (event.keyCode === 37) nextTab(-1)
 }
-function test () {console.log("hej med dig")}
 const nextTab = (direction?: number) => onTabClick((tabList.length + activeChild.value + (direction ?? 1)) % tabList.length)
-
 function onTabClick (child : number) {
 	tabs.value?.children[activeChild.value].classList.remove("active")
 	tabs.value?.children[child].classList.add("active")
@@ -73,49 +54,6 @@ function onTabClick (child : number) {
 }
 
 
-const sumCurrent = computed(() => {
-	let totalMen = 0
-	const unknownMen = []
-	const equipment : {[name: string]: number} = {}
-
-	// bfs add all
-	let queue : [any, number][] = [[props.organization, 1]]
-	if (props.organization.children)
-		queue = props.organization.children.map((child: any) => [child, child.n || 1])
-
-	while (queue.length != 0) {
-		const [child, n] = queue.pop() as [any, number]
-		// Not leafs
-		if (child.children)
-			queue = queue.concat(child.children?.map((c: any) => [c, n * (c.n || 1)]) ?? [])
-		// Leafs
-		else if (!(parseInt(child.men) > 0))
-			unknownMen.push(child)
-
-		// Add all men
-		totalMen += (parseInt(child.men) || 0) * n
-
-		// Add equipment
-		child.equipment?.forEach((eq : any) => {equipment[eq.name] ||= 0; equipment[eq.name] += eq.n * n})
-	}
-
-	// Sort equipment and convet them into list
-	const equipmentList : [string, number][] = []
-	for (const key in equipment)
-		equipmentList.push( [ key, equipment[key] ] );
-	equipmentList.sort(([,a],[,b]) => b-a)
-
-	// Sort the unknown and convert them into list
-	const unknownMenBySize : {[name: string]: number} = {}
-	unknownMen.forEach((org: any) => { unknownMenBySize[org.size] ||= 0; unknownMenBySize[org.size] += parseInt(org.n) || 1})
-	const unknownMenBySizeList : [string, number][] = []
-	for (const key in unknownMenBySize)
-		unknownMenBySizeList.push( [ key, unknownMenBySize[key] ] );
-	unknownMenBySizeList.sort(([a,],[b,]) => compareSizeFunc(a, b))
-
-
-	return {men: totalMen === 0 ? "Ø" : totalMen, unknownCountBySize: unknownMenBySizeList, equipment: equipmentList}
-})
 
 const totalCompanies = computed(() => {
 	const companies : {[name: string]: [string, number]} = {}
