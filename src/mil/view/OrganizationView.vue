@@ -1,5 +1,5 @@
 <template>
-	<div class="org-view" @keyup.left="nextTab(-1)" @keyup.right="nextTab(1)">
+	<div class="org-view" >
 		<div ref="tabs" class="view-selector">
 			<a v-for="(name, i) in tabList" @click="onTabClick(i)">{{name}}</a>
 		</div>
@@ -39,7 +39,7 @@
 
 <script lang="ts" setup>
 import OrgList from "@/mil/components/OrgList.vue";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, onUnmounted, ref} from "vue";
 import type {Ref} from "vue";
 import {compareSizeFunc, getSizeString, nameToTags} from "@/mil/shared";
 import OrgIcon from "@/mil/components/OrgIcon.vue";
@@ -52,10 +52,19 @@ const props = defineProps<{
 const activeChild = ref(0)
 const tabs: Ref<null | HTMLHtmlElement> = ref(null)
 const tabList = ['table', 'equipment', 'companies']
-onMounted(() => onTabClick(0))
 
+onMounted(() => {
+	onTabClick(0);
+	addEventListener("keyup", keyHandle)
+})
+onUnmounted(() =>	removeEventListener("keyup", keyHandle))
+
+function keyHandle (event : any) {
+	if (event.keyCode === 39) nextTab(1)
+	else if (event.keyCode === 37) nextTab(-1)
+}
 function test () {console.log("hej med dig")}
-const nextTab = (direction?: number) => onTabClick((activeChild.value + (direction ?? 1)) % tabList.length)
+const nextTab = (direction?: number) => onTabClick((tabList.length + activeChild.value + (direction ?? 1)) % tabList.length)
 
 function onTabClick (child : number) {
 	tabs.value?.children[activeChild.value].classList.remove("active")
