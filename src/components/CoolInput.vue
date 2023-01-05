@@ -5,6 +5,7 @@
 		           :pattern="pattern"
 		           :required="required"
 		           :value="value"
+		           :type="type"
 		           autocomplete="off"
 		           class="input"
 		           @input="handleInput"></component>
@@ -24,6 +25,7 @@ defineProps<{
 	error?: string,
 	textarea?: boolean,
 	required?: boolean,
+	type?: string,
 }>()
 const handleInput = (e: any) => emits("input", e.target.value)
 </script>
