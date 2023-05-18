@@ -13,12 +13,13 @@ const props = defineProps<{
 	color?: string,
 	size?: string,
 	radius?: string,
+	borderWidth?: string,
 }>()
 
 const spinnerStyle = computed(() => ({
 	height: props.size ?? "35px",
 	width: props.size ?? "35px",
-	borderWidth: '4px',
+	borderWidth: props.borderWidth ?? '4px',
 	borderStyle: 'solid',
 	borderColor: (props.color ?? "#5dc596") + ' ' + (props.color ?? "#5dc596") + ' transparent',
 	borderRadius: props.radius ?? "100%",

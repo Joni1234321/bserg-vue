@@ -21,7 +21,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr
+			<tr
 					v-for="org in organizationsFiltered"
 					@click="router.push('/mil/' + org._id.$oid)"
 					:style="{backgroundColor: getCountryColor(org.country)}"
@@ -33,6 +33,7 @@
 				</tr>
 			</tbody>
 		</table>
+		<Spinner v-if="loading" loading/>
 	</div>
 </template>
 
@@ -43,7 +44,7 @@ import {onMounted, ref} from "vue";
 import router from "@/index";
 import OrgIcon from "@/mil/components/OrgIcon.vue";
 import {getTypeTags, getSizeString} from "@/mil/shared";
-
+import Spinner from "@/components/Spinner.vue";
 
 const allOrganizations = ref([] as any[])
 const organizationsFiltered = ref([] as any[])
