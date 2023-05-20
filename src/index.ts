@@ -15,11 +15,6 @@ const router = createRouter(
                 component: () => import("@/view/AboutView.vue")
             },
             {
-                path: "/book",
-                name: "book",
-                component: () => import("@/view/BookView.vue")
-            },
-            {
                 path: "/login",
                 name: "login",
                 component: () => import("@/view/LoginView.vue")
@@ -95,6 +90,42 @@ const router = createRouter(
                     },
 
                 ]
+            },
+            {
+                path: "/dod",
+                component: () => import("@/dod/view/DodView.vue"),
+                children: [
+                    {
+                        path: "",
+                        name: "dod",
+                        component: () => import("@/dod/view/DodMenuView.vue"),
+                    },
+                    {
+                        path: "organizations",
+                        name: "dod.organizations",
+                        component: () => import("@/mil/view/HelpView.vue"),
+                    },
+                    {
+                        path: "equipment",
+                        name: "dod.equipment",
+                        component: () => import("@/dod/view/EquipmentView.vue"),
+                    },
+                    {
+                        path: "documents",
+                        name: "dod.documents",
+                        component: () => import("@/mil/view/HelpView.vue"),
+                    },
+                    {
+                        path: "help",
+                        name: "dod.help",
+                        component: () => import("@/dod/view/HelpView.vue"),
+                    },
+                ]
+            },
+            {
+                path: "/book",
+                name: "book",
+                component: () => import("@/view/BookView.vue"),
             },
 
             {

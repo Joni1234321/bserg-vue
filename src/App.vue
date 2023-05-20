@@ -4,6 +4,7 @@
 		<router-link :to="{name: 'home'}">bserg</router-link>
 		<router-link :to="{name: 'projects'}">projects</router-link>
 		<router-link :to="{name: 'mil'}">demo</router-link>
+		<router-link :to="{name: 'dod'}">dod</router-link>
 		<router-link :to="{name: 'book'}">book</router-link>
 		<router-link :to="{name: 'login'}" style="float:right;">login</router-link>
 	</nav>

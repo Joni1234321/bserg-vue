@@ -16,7 +16,6 @@ import {inject} from "vue";
 
 const loading = inject("loading-books", false)
 defineProps<{
-	books: Book[],
 }>()
 
 </script>
